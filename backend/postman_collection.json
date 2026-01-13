@@ -1,0 +1,544 @@
+{
+    "info": {
+        "_postman_id": "rfp-management-api",
+        "name": "RFP Management System API",
+        "description": "AI-Powered RFP Management System - Complete API Collection",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3001",
+            "type": "string"
+        },
+        {
+            "key": "rfpId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "vendorId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "proposalId",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/health",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "health"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Vendors",
+            "item": [
+                {
+                    "name": "Create Vendor",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.collectionVariables.set('vendorId', jsonData.data.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Tech Solutions Inc\",\n  \"email\": \"vendor@techsolutions.com\",\n  \"contactPerson\": \"John Smith\",\n  \"phone\": \"+1-555-0100\",\n  \"address\": \"123 Tech Street, Silicon Valley, CA\",\n  \"categories\": [\"IT Hardware\", \"Software\"]\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/vendors",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vendors"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Vendors",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/vendors?page=1&limit=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vendors"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "ACTIVE",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Vendor by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/vendors/{{vendorId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vendors",
+                                "{{vendorId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Vendor",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"contactPerson\": \"Jane Doe\",\n  \"phone\": \"+1-555-0101\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/vendors/{{vendorId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vendors",
+                                "{{vendorId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Vendor",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/vendors/{{vendorId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vendors",
+                                "{{vendorId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "RFPs",
+            "item": [
+                {
+                    "name": "Create RFP (Natural Language)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.collectionVariables.set('rfpId', jsonData.data.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"naturalLanguageInput\": \"I need to procure laptops and monitors for our new office. Budget is $50,000 total. Need delivery within 30 days. We need 20 laptops with 16GB RAM and 15 monitors 27-inch. Payment terms should be net 30, and we need at least 1 year warranty.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps"
+                            ]
+                        },
+                        "description": "Creates an RFP by parsing natural language input using AI (Gemini)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List RFPs",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps?page=1&limit=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get RFP by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps/{{rfpId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps",
+                                "{{rfpId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update RFP",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Updated Office Equipment RFP\",\n  \"budget\": 55000,\n  \"warrantyMonths\": 24\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps/{{rfpId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps",
+                                "{{rfpId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Send RFP to Vendors",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"vendorIds\": [\"{{vendorId}}\"]\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps/{{rfpId}}/send",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps",
+                                "{{rfpId}}",
+                                "send"
+                            ]
+                        },
+                        "description": "Sends the RFP via email to selected vendors"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Proposals for RFP",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps/{{rfpId}}/proposals",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps",
+                                "{{rfpId}}",
+                                "proposals"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Compare Proposals (AI)",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps/{{rfpId}}/compare",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps",
+                                "{{rfpId}}",
+                                "compare"
+                            ]
+                        },
+                        "description": "Uses AI to compare all proposals for this RFP and provide recommendations"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete RFP",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/rfps/{{rfpId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "rfps",
+                                "{{rfpId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Proposals",
+            "item": [
+                {
+                    "name": "Create Proposal (Manual/Test)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.collectionVariables.set('proposalId', jsonData.data.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rfpId\": \"{{rfpId}}\",\n  \"vendorId\": \"{{vendorId}}\",\n  \"rawContent\": \"Thank you for your RFP. We are pleased to offer:\\n\\nLaptops (20 units): $800 each = $16,000\\nMonitors (15 units): $400 each = $6,000\\n\\nTotal: $22,000\\n\\nDelivery: 25 days\\nWarranty: 2 years\\nPayment: Net 30 accepted\",\n  \"rawSubject\": \"RE: RFP - Our Proposal\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/proposals",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "proposals"
+                            ]
+                        },
+                        "description": "Manually create a proposal for testing. AI will parse the raw content."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Proposal by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/proposals/{{proposalId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "proposals",
+                                "{{proposalId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Emails",
+            "item": [
+                {
+                    "name": "Inbound Email Webhook",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"from\": \"vendor@techsolutions.com\",\n  \"to\": \"rfp@yourcompany.com\",\n  \"subject\": \"RE: RFP-XXXXXXXX - Our Proposal\",\n  \"body\": \"Thank you for your RFP. We are pleased to offer:\\n\\nLaptops (20 units): $750 each = $15,000\\nMonitors (15 units): $350 each = $5,250\\n\\nTotal: $20,250\\n\\nDelivery: 20 days\\nWarranty: 18 months\\nPayment: Net 30 accepted\\n\\nLooking forward to your response.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/emails/webhook",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "emails",
+                                "webhook"
+                            ]
+                        },
+                        "description": "Simulates inbound email from vendor. AI parses the response automatically."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Emails",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/emails?page=1&limit=20",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "emails"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "20"
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "INBOUND",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}

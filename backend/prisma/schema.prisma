@@ -1,0 +1,217 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum RfpStatus {
+  DRAFT
+  SENT
+  EVALUATING
+  CLOSED
+}
+
+enum VendorStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum RfpVendorEmailStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum ProposalStatus {
+  RECEIVED
+  PARSED
+  EVALUATED
+}
+
+enum EmailType {
+  OUTBOUND
+  INBOUND
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  FAILED
+  RECEIVED
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+/// Request for Proposal - the core entity
+model Rfp {
+  id              String    @id @default(cuid())
+  
+  // The original natural language input from the user
+  originalInput   String    @db.Text
+  
+  // AI-extracted structured data
+  title           String
+  description     String?   @db.Text
+  
+  // Items required - stored as JSON array
+  // Each item: { name, quantity, specifications, unit? }
+  items           Json      @default("[]")
+  
+  // Budget information
+  budget          Decimal?  @db.Decimal(15, 2)
+  currency        String    @default("USD")
+  
+  // Terms
+  deliveryDeadline  DateTime?
+  deliveryDays      Int?
+  paymentTerms      String?   // e.g., "Net 30"
+  warrantyMonths    Int?
+  
+  // Additional requirements extracted by AI
+  additionalTerms   String?   @db.Text
+  
+  status          RfpStatus @default(DRAFT)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  rfpVendors      RfpVendor[]
+  proposals       Proposal[]
+  emails          Email[]
+
+  @@map("rfps")
+}
+
+/// Vendor master data
+model Vendor {
+  id              String       @id @default(cuid())
+  
+  name            String
+  email           String       @unique
+  contactPerson   String?
+  phone           String?
+  address         String?      @db.Text
+  
+  // Categories/specializations - stored as JSON array
+  categories      Json         @default("[]")
+  
+  status          VendorStatus @default(ACTIVE)
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  // Relations
+  rfpVendors      RfpVendor[]
+  proposals       Proposal[]
+  emails          Email[]
+
+  @@map("vendors")
+}
+
+/// Junction table for RFP-Vendor relationship
+/// Tracks which vendors an RFP was sent to
+model RfpVendor {
+  id            String               @id @default(cuid())
+  
+  rfpId         String
+  rfp           Rfp                  @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  
+  vendorId      String
+  vendor        Vendor               @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  
+  sentAt        DateTime?
+  emailStatus   RfpVendorEmailStatus @default(PENDING)
+  
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  @@unique([rfpId, vendorId])
+  @@map("rfp_vendors")
+}
+
+/// Vendor proposal/response
+model Proposal {
+  id            String         @id @default(cuid())
+  
+  rfpId         String
+  rfp           Rfp            @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  
+  vendorId      String
+  vendor        Vendor         @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  
+  // Original email content
+  rawContent    String         @db.Text
+  rawSubject    String?
+  
+  // AI-extracted structured data
+  // { items: [{ name, quotedPrice, quantity, notes }], terms, conditions }
+  parsedData    Json?
+  
+  // Summary pricing
+  totalPrice    Decimal?       @db.Decimal(15, 2)
+  currency      String         @default("USD")
+  
+  // Parsed terms
+  deliveryDays    Int?
+  warrantyMonths  Int?
+  paymentTerms    String?
+  
+  // AI evaluation
+  aiScore       Int?           // 0-100
+  aiSummary     String?        @db.Text
+  aiStrengths   Json?          // Array of strengths
+  aiWeaknesses  Json?          // Array of weaknesses
+  
+  status        ProposalStatus @default(RECEIVED)
+  
+  receivedAt    DateTime       @default(now())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@unique([rfpId, vendorId])
+  @@map("proposals")
+}
+
+/// Email tracking
+model Email {
+  id            String       @id @default(cuid())
+  
+  type          EmailType
+  
+  rfpId         String?
+  rfp           Rfp?         @relation(fields: [rfpId], references: [id], onDelete: SetNull)
+  
+  vendorId      String?
+  vendor        Vendor?      @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+  
+  // Email details
+  fromAddress   String
+  toAddress     String
+  subject       String
+  body          String       @db.Text
+  
+  // For inbound emails - raw payload
+  rawPayload    Json?
+  
+  status        EmailStatus  @default(PENDING)
+  sentAt        DateTime?
+  errorMessage  String?
+  
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("emails")
+}
