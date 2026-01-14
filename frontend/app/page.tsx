@@ -1,14 +1,6 @@
 import { Suspense } from 'react';
 import { getRfps, getVendors } from '@/lib/actions';
 import { DashboardContent } from '@/components/dashboard/dashboard-content';
-import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Separator } from '@/components/ui/separator';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -85,22 +77,8 @@ async function DashboardData() {
 
 export default function DashboardPage() {
   return (
-    <>
-      <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbPage>Dashboard</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </header>
-
-      <Suspense fallback={<DashboardSkeleton />}>
-        <DashboardData />
-      </Suspense>
-    </>
+    <Suspense fallback={<DashboardSkeleton />}>
+      <DashboardData />
+    </Suspense>
   );
 }

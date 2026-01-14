@@ -20,7 +20,6 @@ import {
   BarChart3,
   Plus,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -190,49 +189,34 @@ export default function RfpDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="RFP Details" />
-        <div className="flex-1 p-6 space-y-6 max-w-5xl mx-auto w-full">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-48 w-full" />
-        </div>
+      <div className="flex-1 p-6 space-y-6 max-w-5xl mx-auto w-full">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-48 w-full" />
       </div>
     );
   }
 
   if (error || !rfp) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="RFP Not Found" />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <FileText className="h-16 w-16 text-muted-foreground/50 mx-auto" />
-            <h2 className="mt-4 text-lg font-semibold">RFP not found</h2>
-            <p className="mt-2 text-muted-foreground">
-              The RFP you&apos;re looking for doesn&apos;t exist or has been deleted.
-            </p>
-            <Button className="mt-4" asChild>
-              <Link href="/rfps">Back to RFPs</Link>
-            </Button>
-          </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <FileText className="h-16 w-16 text-muted-foreground/50 mx-auto" />
+          <h2 className="mt-4 text-lg font-semibold">RFP not found</h2>
+          <p className="mt-2 text-muted-foreground">
+            The RFP you&apos;re looking for doesn&apos;t exist or has been deleted.
+          </p>
+          <Button className="mt-4" asChild>
+            <Link href="/rfps">Back to RFPs</Link>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title={rfp.title}
-        breadcrumbs={[
-          { label: 'RFPs', href: '/rfps' },
-          { label: rfp.title },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 max-w-5xl mx-auto w-full">
-        {/* Actions */}
+    <div className="flex-1 p-6 space-y-6 max-w-5xl mx-auto w-full">
+      {/* Actions */}
         <div className="flex items-center justify-end">
           <div className="flex gap-2">
             {rfp.status === 'DRAFT' && (
@@ -548,7 +532,6 @@ export default function RfpDetailPage() {
             )}
           </TabsContent>
         </Tabs>
-      </div>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

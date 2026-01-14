@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 import "./globals.css";
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { Providers } from "@/components/providers";
-import { Separator } from "@/components/ui/separator";
+import { DynamicHeader } from "@/components/layout/dynamic-header";
 
 const raleway = Raleway({
   variable: "--font-inter",
@@ -33,6 +33,7 @@ export default function RootLayout({
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
+              <DynamicHeader />
               {children}
             </SidebarInset>
           </SidebarProvider>

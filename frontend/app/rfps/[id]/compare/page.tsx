@@ -18,7 +18,6 @@ import {
   TrendingDown,
   Minus,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -136,29 +135,23 @@ export default function ComparisonPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Compare Proposals" />
-        <div className="flex-1 p-6 space-y-6">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-96 w-full" />
-        </div>
+      <div className="flex-1 p-6 space-y-6">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-96 w-full" />
       </div>
     );
   }
 
   if (!rfp) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="RFP Not Found" />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <FileText className="h-16 w-16 text-muted-foreground/50 mx-auto" />
-            <h2 className="mt-4 text-lg font-semibold">RFP not found</h2>
-            <Button className="mt-4" asChild>
-              <Link href="/rfps">Back to RFPs</Link>
-            </Button>
-          </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <FileText className="h-16 w-16 text-muted-foreground/50 mx-auto" />
+          <h2 className="mt-4 text-lg font-semibold">RFP not found</h2>
+          <Button className="mt-4" asChild>
+            <Link href="/rfps">Back to RFPs</Link>
+          </Button>
         </div>
       </div>
     );
@@ -195,19 +188,8 @@ export default function ComparisonPage() {
   }, -1);
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title="Compare Proposals"
-        description={rfp.title}
-        breadcrumbs={[
-          { label: 'RFPs', href: '/rfps' },
-          { label: rfp.title, href: `/rfps/${rfpId}` },
-          { label: 'Compare' },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 overflow-auto">
-        {/* Compare Action */}
+    <div className="flex-1 p-6 space-y-6 overflow-auto">
+      {/* Compare Action */}
         <div className="flex items-center justify-end">
           <Button onClick={handleCompare} disabled={comparing || proposals.length === 0}>
             {comparing ? (
@@ -495,7 +477,6 @@ export default function ComparisonPage() {
             )}
           </>
         )}
-      </div>
     </div>
   );
 }

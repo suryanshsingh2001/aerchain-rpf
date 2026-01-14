@@ -15,7 +15,6 @@ import {
   ChevronRight,
   Send,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -77,17 +76,8 @@ export default function CreateRfpPage() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title="Create RFP"
-        breadcrumbs={[
-          { label: 'RFPs', href: '/rfps' },
-          { label: 'Create' },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 max-w-4xl mx-auto w-full">
-        {!generatedRfp ? (
+    <div className="flex-1 p-6 space-y-6 max-w-5xl mx-auto w-full">
+      {!generatedRfp ? (
           <>
             {/* Input Section */}
             <Card>
@@ -106,7 +96,7 @@ export default function CreateRfpPage() {
                   placeholder="Example: I need to procure laptops and monitors for our new office. Budget is $50,000 total. Need delivery within 30 days..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  rows={6}
+                  rows={16}
                   className="resize-none"
                 />
                 <div className="flex items-center justify-between">
@@ -121,7 +111,7 @@ export default function CreateRfpPage() {
                       </>
                     ) : (
                       <>
-                        <Sparkles className="mr-2 h-4 w-4" />
+                        <Sparkles className="h-4 w-4" />
                         Generate RFP
                       </>
                     )}
@@ -285,7 +275,6 @@ export default function CreateRfpPage() {
             </div>
           </>
         )}
-      </div>
     </div>
   );
 }

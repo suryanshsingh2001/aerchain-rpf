@@ -17,7 +17,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -132,8 +131,7 @@ export function VendorsTable({ initialVendors, initialPagination }: VendorsTable
       </div>
 
       {/* Vendors Table */}
-      <Card>
-        <CardContent className="p-0">
+      <div className="rounded-md border">
           {filteredVendors.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <Users className="h-16 w-16 text-muted-foreground/50" />
@@ -156,6 +154,7 @@ export function VendorsTable({ initialVendors, initialPagination }: VendorsTable
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-[60px]">#</TableHead>
                   <TableHead>Vendor</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Categories</TableHead>
@@ -165,8 +164,9 @@ export function VendorsTable({ initialVendors, initialPagination }: VendorsTable
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredVendors.map((vendor) => (
+                {filteredVendors.map((vendor, index) => (
                   <TableRow key={vendor.id}>
+                    <TableCell className="text-muted-foreground">{index + 1}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
@@ -270,8 +270,7 @@ export function VendorsTable({ initialVendors, initialPagination }: VendorsTable
               </TableBody>
             </Table>
           )}
-        </CardContent>
-      </Card>
+      </div>
 
       {/* Pagination */}
       {pagination && pagination.totalPages > 1 && (

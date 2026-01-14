@@ -82,22 +82,7 @@ interface DashboardContentProps {
 export function DashboardContent({ stats, recentRfps, recentVendors }: DashboardContentProps) {
   return (
     <div className="flex-1 p-6 space-y-6">
-      {/* Quick Actions */}
-      <div className="flex flex-wrap gap-3">
-        <Button asChild>
-          <Link href="/rfps/create">
-            <Plus className="mr-2 h-4 w-4" />
-            Create RFP
-          </Link>
-        </Button>
-        <Button variant="outline" asChild>
-          <Link href="/vendors/create">
-            <Users className="mr-2 h-4 w-4" />
-            Add Vendor
-          </Link>
-        </Button>
-      </div>
-
+  
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard

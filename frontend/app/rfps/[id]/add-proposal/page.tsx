@@ -9,7 +9,6 @@ import {
   Plus,
   CheckCircle2,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -81,27 +80,21 @@ export default function AddProposalPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Add Proposal" />
-        <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-64 w-full" />
-        </div>
+      <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-64 w-full" />
       </div>
     );
   }
 
   if (!rfp) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="RFP Not Found" />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-lg font-semibold">RFP not found</h2>
-            <Button className="mt-4" asChild>
-              <Link href="/rfps">Back to RFPs</Link>
-            </Button>
-          </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold">RFP not found</h2>
+          <Button className="mt-4" asChild>
+            <Link href="/rfps">Back to RFPs</Link>
+          </Button>
         </div>
       </div>
     );
@@ -109,55 +102,41 @@ export default function AddProposalPage() {
 
   if (success) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Proposal Added" />
-        <div className="flex-1 flex items-center justify-center p-6">
-          <Card className="max-w-md w-full text-center">
-            <CardContent className="pt-6">
-              <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
-              </div>
-              <h2 className="text-xl font-semibold mb-2">Proposal Added!</h2>
-              <p className="text-muted-foreground mb-6">
-                The proposal has been parsed by AI and added to this RFP.
-              </p>
-              <div className="flex gap-3 justify-center">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSuccess(false);
-                    setVendorId('');
-                    setSubject('');
-                    setContent('');
-                  }}
-                >
-                  Add Another
-                </Button>
-                <Button asChild>
-                  <Link href={`/rfps/${rfpId}`}>View RFP</Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="flex-1 flex items-center justify-center p-6">
+        <Card className="max-w-md w-full text-center">
+          <CardContent className="pt-6">
+            <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+              <CheckCircle2 className="h-8 w-8 text-green-600" />
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Proposal Added!</h2>
+            <p className="text-muted-foreground mb-6">
+              The proposal has been parsed by AI and added to this RFP.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSuccess(false);
+                  setVendorId('');
+                  setSubject('');
+                  setContent('');
+                }}
+              >
+                Add Another
+              </Button>
+              <Button asChild>
+                <Link href={`/rfps/${rfpId}`}>View RFP</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title="Add Proposal"
-        description="Manually add a vendor proposal"
-        breadcrumbs={[
-          { label: 'RFPs', href: '/rfps' },
-          { label: rfp.title, href: `/rfps/${rfpId}` },
-          { label: 'Add Proposal' },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
-        <Card>
+    <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
+      <Card>
           <CardHeader>
             <CardTitle>Vendor Proposal</CardTitle>
             <CardDescription>
@@ -244,7 +223,6 @@ export default function AddProposalPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
     </div>
   );
 }

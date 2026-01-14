@@ -9,7 +9,6 @@ import {
   Plus,
   X,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -111,46 +110,29 @@ export default function EditVendorPage() {
 
   if (loadingVendor) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Edit Vendor" />
-        <div className="flex-1 p-6 space-y-6 max-w-2xl mx-auto w-full">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-96 w-full" />
-        </div>
+      <div className="flex-1 p-6 space-y-6 max-w-2xl mx-auto w-full">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-96 w-full" />
       </div>
     );
   }
 
   if (!vendor) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Vendor Not Found" />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-lg font-semibold">Vendor not found</h2>
-            <Button className="mt-4" asChild>
-              <Link href="/vendors">Back to Vendors</Link>
-            </Button>
-          </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold">Vendor not found</h2>
+          <Button className="mt-4" asChild>
+            <Link href="/vendors">Back to Vendors</Link>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title="Edit Vendor"
-        description={`Update ${vendor.name}'s information`}
-        breadcrumbs={[
-          { label: 'Vendors', href: '/vendors' },
-          { label: vendor.name, href: `/vendors/${vendorId}` },
-          { label: 'Edit' },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 max-w-2xl mx-auto w-full">
-        <form onSubmit={handleSubmit}>
+    <div className="flex-1 p-6 space-y-6 max-w-2xl mx-auto w-full">
+      <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>
               <CardTitle>Vendor Information</CardTitle>
@@ -290,7 +272,6 @@ export default function EditVendorPage() {
             </CardContent>
           </Card>
         </form>
-      </div>
     </div>
   );
 }

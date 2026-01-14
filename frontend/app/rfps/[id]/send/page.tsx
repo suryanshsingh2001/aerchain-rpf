@@ -12,7 +12,6 @@ import {
   Search,
   CheckCircle2,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -92,28 +91,22 @@ export default function SendRfpPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Send RFP" />
-        <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-64 w-full" />
-        </div>
+      <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-64 w-full" />
       </div>
     );
   }
 
   if (!rfp) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="RFP Not Found" />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-lg font-semibold">RFP not found</h2>
-            <Button className="mt-4" asChild>
-              <Link href="/rfps">Back to RFPs</Link>
-            </Button>
-          </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold">RFP not found</h2>
+          <Button className="mt-4" asChild>
+            <Link href="/rfps">Back to RFPs</Link>
+          </Button>
         </div>
       </div>
     );
@@ -121,48 +114,34 @@ export default function SendRfpPage() {
 
   if (success) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="RFP Sent" />
-        <div className="flex-1 flex items-center justify-center p-6">
-          <Card className="max-w-md w-full text-center">
-            <CardContent className="pt-6">
-              <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
-              </div>
-              <h2 className="text-xl font-semibold mb-2">RFP Sent Successfully!</h2>
-              <p className="text-muted-foreground mb-6">
-                Your RFP has been sent to {selectedVendors.size} vendor(s). They will receive
-                an email with all the details.
-              </p>
-              <div className="flex gap-3 justify-center">
-                <Button variant="outline" asChild>
-                  <Link href="/rfps">Back to RFPs</Link>
-                </Button>
-                <Button asChild>
-                  <Link href={`/rfps/${rfpId}`}>View RFP</Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="flex-1 flex items-center justify-center p-6">
+        <Card className="max-w-md w-full text-center">
+          <CardContent className="pt-6">
+            <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+              <CheckCircle2 className="h-8 w-8 text-green-600" />
+            </div>
+            <h2 className="text-xl font-semibold mb-2">RFP Sent Successfully!</h2>
+            <p className="text-muted-foreground mb-6">
+              Your RFP has been sent to {selectedVendors.size} vendor(s). They will receive
+              an email with all the details.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button variant="outline" asChild>
+                <Link href="/rfps">Back to RFPs</Link>
+              </Button>
+              <Button asChild>
+                <Link href={`/rfps/${rfpId}`}>View RFP</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title="Send RFP"
-        description={`Select vendors to receive "${rfp.title}"`}
-        breadcrumbs={[
-          { label: 'RFPs', href: '/rfps' },
-          { label: rfp.title, href: `/rfps/${rfpId}` },
-          { label: 'Send' },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
-        {/* RFP Summary */}
+    <div className="flex-1 p-6 space-y-6 max-w-3xl mx-auto w-full">
+      {/* RFP Summary */}
         <Card>
           <CardHeader>
             <CardTitle className="text-base">RFP Summary</CardTitle>
@@ -298,7 +277,6 @@ export default function SendRfpPage() {
             )}
           </Button>
         </div>
-      </div>
     </div>
   );
 }

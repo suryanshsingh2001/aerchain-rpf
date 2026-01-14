@@ -9,7 +9,6 @@ import {
   X,
   CheckCircle2,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -83,67 +82,54 @@ export default function CreateVendorPage() {
 
   if (success) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Vendor Created" />
-        <div className="flex-1 flex items-center justify-center p-6">
-          <Card className="max-w-md w-full text-center">
-            <CardContent className="pt-6">
-              <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
-              </div>
-              <h2 className="text-xl font-semibold mb-2">Vendor Created!</h2>
-              <p className="text-muted-foreground mb-6">
-                {name} has been added to your vendor network.
-              </p>
-              <div className="flex gap-3 justify-center">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSuccess(false);
-                    setName('');
-                    setEmail('');
-                    setContactPerson('');
-                    setPhone('');
-                    setAddress('');
-                    setCategories([]);
-                    setCreatedVendorId(null);
-                  }}
-                >
-                  Add Another
-                </Button>
-                <Button asChild>
-                  <Link href={createdVendorId ? `/vendors/${createdVendorId}` : '/vendors'}>
-                    View Vendor
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="flex-1 flex items-center justify-center p-6">
+        <Card className="max-w-md w-full text-center">
+          <CardContent className="pt-6">
+            <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+              <CheckCircle2 className="h-8 w-8 text-green-600" />
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Vendor Created!</h2>
+            <p className="text-muted-foreground mb-6">
+              {name} has been added to your vendor network.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSuccess(false);
+                  setName('');
+                  setEmail('');
+                  setContactPerson('');
+                  setPhone('');
+                  setAddress('');
+                  setCategories([]);
+                  setCreatedVendorId(null);
+                }}
+              >
+                Add Another
+              </Button>
+              <Button asChild>
+                <Link href={createdVendorId ? `/vendors/${createdVendorId}` : '/vendors'}>
+                  View Vendor
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title="Add Vendor"
-        description="Add a new vendor to your network"
-        breadcrumbs={[
-          { label: 'Vendors', href: '/vendors' },
-          { label: 'Create' },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 max-w-2xl mx-auto w-full">
-        <form onSubmit={handleSubmit}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Vendor Information</CardTitle>
-              <CardDescription>
-                Enter the vendor&apos;s contact details
-              </CardDescription>
-            </CardHeader>
+    <div className="flex-1 p-6 space-y-6 max-w-2xl mx-auto w-full">
+      <form onSubmit={handleSubmit}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Vendor Information</CardTitle>
+            <CardDescription>
+              Enter the vendor&apos;s contact details
+            </CardDescription>
+          </CardHeader>
             <CardContent className="space-y-6">
               {/* Name & Email */}
               <div className="grid gap-4 sm:grid-cols-2">
@@ -267,7 +253,6 @@ export default function CreateVendorPage() {
             </CardContent>
           </Card>
         </form>
-      </div>
     </div>
   );
 }

@@ -15,7 +15,6 @@ import {
   Clock,
   Users,
 } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -67,49 +66,34 @@ export default function VendorDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Vendor Details" />
-        <div className="flex-1 p-6 space-y-6 max-w-4xl mx-auto w-full">
-          <Skeleton className="h-8 w-24" />
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-48 w-full" />
-        </div>
+      <div className="flex-1 p-6 space-y-6 max-w-4xl mx-auto w-full">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-48 w-full" />
       </div>
     );
   }
 
   if (!vendor) {
     return (
-      <div className="flex flex-col h-full">
-        <Header title="Vendor Not Found" />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <Users className="h-16 w-16 text-muted-foreground/50 mx-auto" />
-            <h2 className="mt-4 text-lg font-semibold">Vendor not found</h2>
-            <p className="mt-2 text-muted-foreground">
-              The vendor you&apos;re looking for doesn&apos;t exist or has been deleted.
-            </p>
-            <Button className="mt-4" asChild>
-              <Link href="/vendors">Back to Vendors</Link>
-            </Button>
-          </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <Users className="h-16 w-16 text-muted-foreground/50 mx-auto" />
+          <h2 className="mt-4 text-lg font-semibold">Vendor not found</h2>
+          <p className="mt-2 text-muted-foreground">
+            The vendor you&apos;re looking for doesn&apos;t exist or has been deleted.
+          </p>
+          <Button className="mt-4" asChild>
+            <Link href="/vendors">Back to Vendors</Link>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Header
-        title={vendor.name}
-        breadcrumbs={[
-          { label: 'Vendors', href: '/vendors' },
-          { label: vendor.name },
-        ]}
-      />
-
-      <div className="flex-1 p-6 space-y-6 max-w-4xl mx-auto w-full">
-        {/* Actions */}
+    <div className="flex-1 p-6 space-y-6 max-w-4xl mx-auto w-full">
+      {/* Actions */}
         <div className="flex items-center justify-end">
           <div className="flex gap-2">
             <Button variant="outline" asChild>
@@ -328,7 +312,6 @@ export default function VendorDetailPage() {
             )}
           </CardContent>
         </Card>
-      </div>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
