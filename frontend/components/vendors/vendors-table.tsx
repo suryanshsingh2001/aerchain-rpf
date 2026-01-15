@@ -244,7 +244,7 @@ export function VendorsTable({
                           <Badge
                             key={cat}
                             variant="outline"
-                            className="text-xs bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-950 dark:text-violet-300 dark:border-violet-800"
+                            className="text-xs bg-muted "
                           >
                             {cat}
                           </Badge>
