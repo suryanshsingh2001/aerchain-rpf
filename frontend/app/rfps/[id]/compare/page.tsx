@@ -188,19 +188,19 @@ export default function ComparisonPage() {
   }, -1);
 
   return (
-    <div className="flex-1 p-6 space-y-6 overflow-auto">
+    <div className="flex-1 p-6 space-y-6 overflow-auto max-w-6xl mx-auto w-full">
       {/* Compare Action */}
         <div className="flex items-center justify-end">
           <Button onClick={handleCompare} disabled={comparing || proposals.length === 0}>
             {comparing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
                 Analyzing...
               </>
             ) : (
               <>
-                <Sparkles className="mr-2 h-4 w-4" />
-                Run AI Comparison
+                <Sparkles className="h-4 w-4" />
+               Compare with AI
               </>
             )}
           </Button>

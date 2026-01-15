@@ -234,7 +234,7 @@ export default function RfpDetailPage() {
   }
 
   return (
-    <div className="flex-1 p-6 space-y-6 max-w-6xl mx-auto w-full">
+    <div className="flex-1 p-6 space-y-6 container max-w-6xl mx-auto w-full">
       {/* Header Section */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between print:hidden">
         <div className="space-y-1">
