@@ -338,6 +338,93 @@ Content-Type: application/json
 GET /api/emails?page=1&limit=20&type=INBOUND
 ```
 
+#### Get IMAP Status
+
+```
+GET /api/emails/imap/status
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "configured": true,
+    "polling": true,
+    "lastFetch": "2024-01-13T15:30:00.000Z",
+    "host": "imap.gmail.com",
+    "user": "your-email@gmail.com"
+  }
+}
+```
+
+#### Test IMAP Connection
+
+```
+POST /api/emails/imap/test
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "success": true,
+    "message": "IMAP connection successful",
+    "details": {
+      "host": "imap.gmail.com",
+      "user": "your-email@gmail.com",
+      "mailboxes": ["INBOX", "Sent", "Drafts", "Trash"]
+    }
+  }
+}
+```
+
+#### Fetch Emails via IMAP (Manual)
+
+```
+POST /api/emails/imap/fetch
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "fetched": 3,
+    "created": 2,
+    "updated": 0,
+    "skipped": 1,
+    "failed": 0,
+    "details": [
+      {
+        "success": true,
+        "emailId": "email-id",
+        "proposalId": "proposal-id",
+        "vendorId": "vendor-id",
+        "rfpId": "rfp-id",
+        "action": "created"
+      }
+    ]
+  }
+}
+```
+
+#### Start IMAP Polling
+
+```
+POST /api/emails/imap/polling/start?interval=2
+```
+
+#### Stop IMAP Polling
+
+```
+POST /api/emails/imap/polling/stop
+```
+
 ---
 
 ## Database Schema
@@ -369,20 +456,74 @@ GET /api/emails?page=1&limit=20&type=INBOUND
 
 ## Inbound Email Configuration
 
+There are two ways to receive vendor email responses:
+
+### Option A: IMAP (Recommended for Development)
+
+IMAP allows the system to poll an email inbox for new vendor responses. This is the easiest setup for development and testing.
+
+#### Configuration
+
+Add these environment variables to your `.env`:
+
+```env
+# Email (IMAP - for receiving emails)
+IMAP_HOST="imap.gmail.com"
+IMAP_PORT=993
+IMAP_USER="your-email@gmail.com"
+IMAP_PASS="your-app-password"
+IMAP_TLS=true
+IMAP_POLLING_INTERVAL=2  # minutes
+```
+
+#### Gmail Setup
+
+1. Enable IMAP in Gmail settings:
+   - Go to Gmail → Settings → See all settings → Forwarding and POP/IMAP
+   - Enable IMAP access
+
+2. Create an App Password (required if 2FA is enabled):
+   - Go to https://myaccount.google.com/apppasswords
+   - Generate a new app password for "Mail"
+   - Use this password as `IMAP_PASS`
+
+3. Allow less secure apps (if not using 2FA):
+   - Go to https://myaccount.google.com/lesssecureapps
+   - Enable access
+
+#### How It Works
+
+1. When the server starts, it automatically begins polling for new emails if IMAP is configured
+2. Every N minutes (default: 2), it fetches unread emails from the INBOX
+3. Emails are matched to vendors by the sender's email address
+4. RFPs are identified by looking for "RFP-XXXXXXXX" pattern in the subject
+5. Vendor responses are parsed by AI and stored as proposals
+6. Processed emails are marked as read
+
+#### Manual Controls
+
+- `GET /api/emails/imap/status` - Check polling status
+- `POST /api/emails/imap/test` - Test IMAP connection
+- `POST /api/emails/imap/fetch` - Manually fetch emails
+- `POST /api/emails/imap/polling/start?interval=5` - Start polling with custom interval
+- `POST /api/emails/imap/polling/stop` - Stop polling
+
+### Option B: Email Webhooks (Production)
+
 For production, integrate with an email service that supports webhooks:
 
-### Option 1: SendGrid Inbound Parse
+#### SendGrid Inbound Parse
 
 1. Configure a domain for inbound email
 2. Set up the Parse Webhook to `POST /api/emails/webhook`
 3. SendGrid will forward emails to your endpoint
 
-### Option 2: Mailgun Routes
+#### Mailgun Routes
 
 1. Create an inbound route in Mailgun
 2. Set the action to forward to your webhook URL
 
-### Option 3: AWS SES
+#### AWS SES
 
 1. Set up SES to receive email on a domain
 2. Use Lambda to forward to your API

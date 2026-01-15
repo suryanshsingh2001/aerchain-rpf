@@ -16,12 +16,20 @@ const envSchema = z.object({
   // Gemini AI
   GEMINI_API_KEY: z.string().min(1, "GEMINI_API_KEY is required"),
 
-  // Email SMTP
+  // Email SMTP (for sending)
   SMTP_HOST: z.string().default("smtp.gmail.com"),
   SMTP_PORT: z.string().default("587"),
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   SMTP_FROM: z.string().default("RFP System <noreply@rfp.local>"),
+
+  // Email IMAP (for receiving)
+  IMAP_HOST: z.string().optional(),
+  IMAP_PORT: z.string().default("993"),
+  IMAP_USER: z.string().optional(),
+  IMAP_PASS: z.string().optional(),
+  IMAP_TLS: z.string().default("true"),
+  IMAP_POLLING_INTERVAL: z.string().default("2"), // minutes
 
   // Webhook
   EMAIL_WEBHOOK_SECRET: z.string().optional(),
@@ -46,6 +54,14 @@ export const env = {
     user: parsed.data.SMTP_USER,
     pass: parsed.data.SMTP_PASS,
     from: parsed.data.SMTP_FROM,
+  },
+  imap: {
+    host: parsed.data.IMAP_HOST,
+    port: parseInt(parsed.data.IMAP_PORT, 10),
+    user: parsed.data.IMAP_USER,
+    password: parsed.data.IMAP_PASS,
+    tls: parsed.data.IMAP_TLS === "true",
+    pollingInterval: parseInt(parsed.data.IMAP_POLLING_INTERVAL, 10),
   },
   emailWebhookSecret: parsed.data.EMAIL_WEBHOOK_SECRET,
 };

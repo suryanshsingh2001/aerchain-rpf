@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { z } from "zod";
 import { prisma } from "../config";
-import { geminiService } from "../services";
+import { geminiService, imapService } from "../services";
 import { sendSuccess } from "../utils";
 import { BadRequestError } from "../middleware";
 import { InboundEmailPayload } from "../types";
@@ -225,3 +225,83 @@ export const getEmails = asyncHandler(async (req: Request, res: Response) => {
     totalPages: Math.ceil(total / limit),
   });
 });
+
+/**
+ * Get IMAP service status
+ */
+export const getImapStatus = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const status = imapService.getStatus();
+    sendSuccess(res, status);
+  }
+);
+
+/**
+ * Test IMAP connection
+ */
+export const testImapConnection = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const result = await imapService.testConnection();
+    sendSuccess(res, result);
+  }
+);
+
+/**
+ * Manually fetch and process emails via IMAP
+ */
+export const fetchEmails = asyncHandler(
+  async (_req: Request, res: Response) => {
+    if (!imapService.isConfigured()) {
+      throw new BadRequestError(
+        "IMAP not configured. Please set IMAP_HOST, IMAP_USER, and IMAP_PASS environment variables."
+      );
+    }
+
+    const result = await imapService.fetchAndProcessEmails();
+
+    const summary = {
+      fetched: result.fetched,
+      created: result.processed.filter((r) => r.action === "created").length,
+      updated: result.processed.filter((r) => r.action === "updated").length,
+      skipped: result.processed.filter((r) => r.action === "skipped").length,
+      failed: result.processed.filter((r) => r.action === "failed").length,
+      details: result.processed,
+    };
+
+    sendSuccess(res, summary);
+  }
+);
+
+/**
+ * Start IMAP polling
+ */
+export const startImapPolling = asyncHandler(
+  async (req: Request, res: Response) => {
+    const intervalMinutes = parseInt(req.query.interval as string) || 2;
+
+    if (!imapService.isConfigured()) {
+      throw new BadRequestError(
+        "IMAP not configured. Please set IMAP_HOST, IMAP_USER, and IMAP_PASS environment variables."
+      );
+    }
+
+    imapService.startPolling(intervalMinutes);
+    sendSuccess(res, {
+      message: `Email polling started with ${intervalMinutes} minute interval`,
+      status: imapService.getStatus(),
+    });
+  }
+);
+
+/**
+ * Stop IMAP polling
+ */
+export const stopImapPolling = asyncHandler(
+  async (_req: Request, res: Response) => {
+    imapService.stopPolling();
+    sendSuccess(res, {
+      message: "Email polling stopped",
+      status: imapService.getStatus(),
+    });
+  }
+);
