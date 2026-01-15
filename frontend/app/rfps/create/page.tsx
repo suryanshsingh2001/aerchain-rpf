@@ -31,9 +31,9 @@ import type { Rfp, RfpItem } from '@/lib/types';
 import { toast } from 'sonner';
 
 const examplePrompts = [
-  "I need to procure laptops and monitors for our new office. Budget is $50,000 total. Need delivery within 30 days. We need 20 laptops with 16GB RAM and 15 monitors 27-inch. Payment terms should be net 30, and we need at least 1 year warranty.",
-  "Looking for office furniture: 50 ergonomic chairs, 25 standing desks, and 10 conference tables. Budget around $75,000. Need them delivered in 2 weeks. 2 year warranty required.",
-  "Need to purchase 100 tablets for our field sales team. Must be iPads with 256GB storage. Budget $60,000. Payment net 45, delivery within 3 weeks."
+  "20 laptops with 16GB RAM and 15 monitors 27-inch for new office. Budget $50,000, delivery in 30 days, net 30 payment, 1 year warranty.",
+  "50 ergonomic chairs, 25 standing desks, 10 conference tables. Budget $75,000, delivery in 2 weeks, 2 year warranty.",
+  "100 iPads 256GB for sales team. Budget $60,000, net 45 payment, delivery in 3 weeks."
 ];
 
 export default function CreateRfpPage() {
@@ -76,85 +76,102 @@ export default function CreateRfpPage() {
   };
 
   return (
-    <div className="flex-1 p-6 space-y-6 max-w-5xl mx-auto w-full">
+    <div className="flex-1 p-6 max-w-4xl mx-auto w-full">
       {!generatedRfp ? (
-          <>
-            {/* Input Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-violet-500" />
-                  Describe Your Needs
-                </CardTitle>
-                <CardDescription>
-                  Write in plain English what you want to procure. Our AI will extract the
-                  important details and create a structured RFP.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea
-                  placeholder="Example: I need to procure laptops and monitors for our new office. Budget is $50,000 total. Need delivery within 30 days..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  rows={16}
-                  className="resize-none"
-                />
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    {input.length} characters
-                  </span>
-                  <Button onClick={handleGenerate} disabled={loading}>
-                    {loading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Generating...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="h-4 w-4" />
-                        Generate RFP
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="space-y-6">
+            {/* Main Input Section - Hero Style */}
+            <div className="text-center space-y-2 pt-4">
+              <div className="inline-flex items-center justify-center rounded-full bg-violet-500/10 p-3 mb-2">
+                <Sparkles className="h-6 w-6 text-violet-500" />
+              </div>
+              <h1 className="text-2xl font-bold tracking-tight">What do you need to procure?</h1>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                Describe your requirements and we'll create a structured RFP instantly.
+              </p>
+            </div>
 
-            {/* Example Prompts */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Example Prompts</CardTitle>
-                <CardDescription>
-                  Click on any example below to use it as a starting point
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
+            {/* Large Textarea */}
+            <div className="space-y-3">
+              <Textarea
+                placeholder="Describe what you need, quantities, budget, timeline, and any specific requirements..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                rows={14}
+                className="min-h-40 text-base p-5 rounded-xl border-2 focus:border-violet-500 transition-colors"
+              />
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">
+                  {input.length > 0 ? `${input.length} characters` : 'Min 20 characters required'}
+                </span>
+                <Button 
+                  onClick={handleGenerate} 
+                  disabled={loading || input.length < 20}
+                  size="lg"
+                  className="gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-4 w-4" />
+                      Generate RFP
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+
+            {/* Quick Examples - Compact */}
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground text-center">Try an example:</p>
+              <div className="grid gap-2 sm:grid-cols-3">
                 {examplePrompts.map((prompt, index) => (
                   <button
                     key={index}
                     onClick={() => handleUseExample(prompt)}
-                    className="w-full text-left p-4 rounded-lg border bg-muted/50 hover:bg-muted transition-colors"
+                    className="text-left p-3 rounded-lg border bg-muted/30 hover:bg-muted/60 hover:border-violet-500/30 transition-all text-sm"
                   >
-                    <p className="text-sm line-clamp-2">{prompt}</p>
+                    <p className="line-clamp-2 text-muted-foreground">{prompt}</p>
                   </button>
                 ))}
-              </CardContent>
-            </Card>
-          </>
+              </div>
+            </div>
+
+            {/* Tips - Minimal */}
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground pt-4">
+              <span className="flex items-center gap-1.5">
+                <Package className="h-3.5 w-3.5" /> Items & quantities
+              </span>
+              <span className="flex items-center gap-1.5">
+                <DollarSign className="h-3.5 w-3.5" /> Budget
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" /> Timeline
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Shield className="h-3.5 w-3.5" /> Requirements
+              </span>
+            </div>
+          </div>
         ) : (
-          <>
+          <div className="space-y-6">
             {/* Generated RFP Preview */}
-            <Card className="border-green-500/50 bg-green-500/5">
+            <Card className="border-emerald-500/50 bg-emerald-500/5">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Badge variant="outline" className="mb-2 bg-green-500/10 text-green-700 border-green-500/30">
-                      ✓ Generated Successfully
+                    <Badge variant="outline" className="mb-2 bg-emerald-500/10 text-emerald-700 border-emerald-500/30">
+                      ✓ RFP Generated
                     </Badge>
                     <CardTitle>{generatedRfp.title}</CardTitle>
-                    <CardDescription className="mt-2">
-                      {generatedRfp.description || 'No description provided'}
-                    </CardDescription>
+                    {generatedRfp.description && (
+                      <CardDescription className="mt-2">
+                        {generatedRfp.description}
+                      </CardDescription>
+                    )}
                   </div>
                 </div>
               </CardHeader>
@@ -262,18 +279,18 @@ export default function CreateRfpPage() {
                 <Button variant="outline" asChild>
                   <Link href={`/rfps/${generatedRfp.id}`}>
                     View Details
-                    <ChevronRight className="ml-2 h-4 w-4" />
+                    <ChevronRight className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button asChild>
                   <Link href={`/rfps/${generatedRfp.id}/send`}>
-                    <Send className="mr-2 h-4 w-4" />
+                    <Send className="h-4 w-4" />
                     Send to Vendors
                   </Link>
                 </Button>
               </div>
             </div>
-          </>
+          </div>
         )}
     </div>
   );

@@ -60,20 +60,32 @@ function RfpStatusBadge({ status }: { status: RfpStatus }) {
   const config: Record<
     RfpStatus,
     {
-      variant: "default" | "secondary" | "outline" | "destructive";
+      className: string;
       icon: typeof FileText;
     }
   > = {
-    DRAFT: { variant: "secondary", icon: FileText },
-    SENT: { variant: "default", icon: Mail },
-    EVALUATING: { variant: "outline", icon: Clock },
-    CLOSED: { variant: "secondary", icon: CheckCircle2 },
+    DRAFT: { 
+      className: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700', 
+      icon: FileText 
+    },
+    SENT: { 
+      className: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800', 
+      icon: Mail 
+    },
+    EVALUATING: { 
+      className: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800', 
+      icon: Clock 
+    },
+    CLOSED: { 
+      className: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800', 
+      icon: CheckCircle2 
+    },
   };
 
-  const { variant, icon: Icon } = config[status];
+  const { className, icon: Icon } = config[status];
 
   return (
-    <Badge variant={variant} className="gap-1">
+    <Badge variant="outline" className={`gap-1.5 font-medium ${className}`}>
       <Icon className="h-3 w-3" />
       {status.charAt(0) + status.slice(1).toLowerCase()}
     </Badge>
@@ -169,10 +181,12 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
       </div>
 
       {/* RFPs Table */}
-      <div className="rounded-md border">
+      <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
         {filteredRfps.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <FileText className="h-16 w-16 text-muted-foreground/50" />
+            <div className="rounded-full bg-muted p-4">
+              <FileText className="h-12 w-12 text-muted-foreground/50" />
+            </div>
             <h3 className="mt-4 text-lg font-semibold">No RFPs found</h3>
             <p className="mt-2 text-sm text-muted-foreground max-w-sm">
               {search || statusFilter !== "all"
@@ -191,40 +205,56 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
         ) : (
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-[60px]">#</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Budget</TableHead>
-                <TableHead>Vendors</TableHead>
-                <TableHead>Proposals</TableHead>
-                <TableHead>Created</TableHead>
+              <TableRow className="bg-muted/50 hover:bg-muted/50">
+                <TableHead className="w-[60px] font-semibold">#</TableHead>
+                <TableHead className="font-semibold">Title</TableHead>
+                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="font-semibold">Budget</TableHead>
+                <TableHead className="font-semibold text-center">Vendors</TableHead>
+                <TableHead className="font-semibold text-center">Proposals</TableHead>
+                <TableHead className="font-semibold">Created</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredRfps.map((rfp, index) => (
-                <TableRow key={rfp.id}>
-                  <TableCell className="text-muted-foreground">
+                <TableRow key={rfp.id} className="group">
+                  <TableCell className="text-muted-foreground font-medium">
                     {index + 1}
                   </TableCell>
                   <TableCell>
-                    <Link
-                      href={`/rfps/${rfp.id}`}
-                      className="font-medium hover:underline"
-                    >
-                      {rfp.title}
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/15 transition-colors">
+                        <FileText className="h-4 w-4 text-primary" />
+                      </div>
+                      <Link
+                        href={`/rfps/${rfp.id}`}
+                        className="font-medium hover:text-primary hover:underline transition-colors"
+                      >
+                        {rfp.title}
+                      </Link>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <RfpStatusBadge status={rfp.status} />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="font-medium">
                     {formatCurrency(rfp.budget, rfp.currency)}
                   </TableCell>
-                  <TableCell>{rfp.rfpVendors?.length || 0}</TableCell>
-                  <TableCell>{rfp._count?.proposals || 0}</TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="text-center">
+                    <Badge variant="secondary" className="font-medium">
+                      {rfp.rfpVendors?.length || 0}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Badge 
+                      variant="secondary" 
+                      className={`font-medium ${(rfp._count?.proposals || 0) > 0 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : ''}`}
+                    >
+                      {rfp._count?.proposals || 0}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground text-sm">
                     {formatDistanceToNow(new Date(rfp.createdAt), {
                       addSuffix: true,
                     })}
