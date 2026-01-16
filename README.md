@@ -148,7 +148,19 @@ cd frontend
 # 1. Install dependencies
 npm install
 
-# 2. Start the development server
+# 2. Configure environment variables
+cp env.example .env.local
+```
+
+Edit `.env.local` if needed (defaults work for local development):
+
+```env
+# Backend API URL
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+```bash
+# 3. Start the development server
 npm run dev
 ```
 
