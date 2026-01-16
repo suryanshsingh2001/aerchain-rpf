@@ -1,21 +1,12 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { z } from "zod";
 import { prisma } from "../config";
 import { geminiService, imapService } from "../services";
 import { sendSuccess } from "../utils";
 import { BadRequestError } from "../middleware";
 import { InboundEmailPayload } from "../types";
 import { Rfp } from "@prisma/client";
-
-// Validation schema for inbound email webhook
-const inboundEmailSchema = z.object({
-  from: z.string().email(),
-  to: z.string().email(),
-  subject: z.string(),
-  body: z.string(),
-  rawPayload: z.any().optional(),
-});
+import { inboundEmailSchema } from "../schemas";
 
 /**
  * Handle inbound email webhook

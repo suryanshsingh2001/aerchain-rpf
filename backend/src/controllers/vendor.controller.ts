@@ -1,30 +1,10 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { z } from "zod";
 import { prisma } from "../config";
 import { sendSuccess } from "../utils";
 import { NotFoundError } from "../middleware";
 import { CreateVendorRequest, UpdateVendorRequest } from "../types";
-
-// Validation schemas
-const createVendorSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Valid email is required"),
-  contactPerson: z.string().optional(),
-  phone: z.string().optional(),
-  address: z.string().optional(),
-  categories: z.array(z.string()).optional(),
-});
-
-const updateVendorSchema = z.object({
-  name: z.string().min(1).optional(),
-  email: z.string().email().optional(),
-  contactPerson: z.string().optional().nullable(),
-  phone: z.string().optional().nullable(),
-  address: z.string().optional().nullable(),
-  categories: z.array(z.string()).optional(),
-  status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
-});
+import { createVendorSchema, updateVendorSchema } from "../schemas";
 
 /**
  * Create a new vendor

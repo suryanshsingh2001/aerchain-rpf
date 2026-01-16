@@ -1,45 +1,11 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { z } from "zod";
 import { prisma } from "../config";
 import { geminiService, emailService } from "../services";
 import { sendSuccess } from "../utils";
 import { NotFoundError, ValidationError } from "../middleware";
 import { CreateRfpRequest, SendRfpRequest } from "../types";
-
-// Validation schemas
-const createRfpSchema = z.object({
-  naturalLanguageInput: z
-    .string()
-    .min(10, "Input must be at least 10 characters"),
-});
-
-const updateRfpSchema = z.object({
-  title: z.string().min(1).optional(),
-  description: z.string().optional(),
-  items: z
-    .array(
-      z.object({
-        name: z.string(),
-        quantity: z.number().positive(),
-        specifications: z.string().optional(),
-        unit: z.string().optional(),
-      })
-    )
-    .optional(),
-  budget: z.number().positive().optional().nullable(),
-  currency: z.string().optional(),
-  deliveryDays: z.number().positive().optional().nullable(),
-  deliveryDeadline: z.string().datetime().optional().nullable(),
-  paymentTerms: z.string().optional().nullable(),
-  warrantyMonths: z.number().positive().optional().nullable(),
-  additionalTerms: z.string().optional().nullable(),
-  status: z.enum(["DRAFT", "SENT", "EVALUATING", "CLOSED"]).optional(),
-});
-
-const sendRfpSchema = z.object({
-  vendorIds: z.array(z.string()).min(1, "At least one vendor is required"),
-});
+import { createRfpSchema, updateRfpSchema, sendRfpSchema } from "../schemas";
 
 /**
  * Create a new RFP from natural language input
