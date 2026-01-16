@@ -8,6 +8,15 @@
 [![Prisma](https://img.shields.io/badge/Prisma-6.2-purple.svg)](https://www.prisma.io/)
 [![Gemini](https://img.shields.io/badge/Gemini-2.5_Flash-orange.svg)](https://ai.google.dev/)
 
+
+<div>
+    <a href="https://www.loom.com/share/2b9071cd3df140499f8d7d96be493d14">
+    </a>
+    <a href="https://www.loom.com/share/2b9071cd3df140499f8d7d96be493d14">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/2b9071cd3df140499f8d7d96be493d14-59a2d05ef6226465-full-play.gif#t=0.1">
+    </a>
+  </div>
+
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
