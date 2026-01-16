@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRfp } from '@/hooks/use-rfps';
-import { useProposals } from '@/hooks/use-proposals';
+import { useRfp } from '@/features/rfps/hooks/use-rfps';
+import { useProposals } from '@/features/proposals/hooks/use-proposals';
 import {
   ProposalRankingList,
   ComparisonTable,

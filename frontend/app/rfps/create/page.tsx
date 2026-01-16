@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { useRfps } from '@/hooks/use-rfps';
+import { useRfps } from '@/features/rfps/hooks/use-rfps';
 import { RfpItemsList, RfpTermsGrid } from '@/features/rfps';
 import type { Rfp, RfpItem } from '@/lib/types';
 import { toast } from 'sonner';

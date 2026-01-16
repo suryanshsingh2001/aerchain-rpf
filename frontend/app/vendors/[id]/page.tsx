@@ -6,7 +6,7 @@ import { Building2, FileText, BarChart3 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useVendor, useVendors } from '@/hooks/use-vendors';
+import { useVendor, useVendors } from '@/features/vendors/hooks/use-vendors';
 import {
   VendorDetailHeader,
   VendorDetailsTab,

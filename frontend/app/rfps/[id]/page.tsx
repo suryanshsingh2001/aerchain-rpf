@@ -6,8 +6,8 @@ import { FileText, Users, Mail } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useRfp, useRfps } from '@/hooks/use-rfps';
-import { useProposals } from '@/hooks/use-proposals';
+import { useRfp, useRfps } from '@/features/rfps/hooks/use-rfps';
+import { useProposals } from '@/features/proposals/hooks/use-proposals';
 import {
   RfpDetailHeader,
   RfpDetailsTab,

@@ -27,9 +27,9 @@ import {
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRfp } from '@/hooks/use-rfps';
-import { useVendors } from '@/hooks/use-vendors';
-import { useProposals } from '@/hooks/use-proposals';
+import { useRfp } from '@/features/rfps/hooks/use-rfps';
+import { useVendors } from '@/features/vendors/hooks/use-vendors';
+import { useProposals } from '@/features/proposals/hooks/use-proposals';
 import { SuccessCard, NotFoundState } from '@/features/shared';
 import { toast } from 'sonner';
 

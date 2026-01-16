@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useVendors } from '@/hooks/use-vendors';
+import { useVendors } from '@/features/vendors/hooks/use-vendors';
 import { VendorFormFields, type VendorFormData } from '@/features/vendors';
 import { SuccessCard } from '@/features/shared';
 import { toast } from 'sonner';

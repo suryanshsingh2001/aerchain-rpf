@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useVendor, useVendors } from '@/hooks/use-vendors';
+import { useVendor, useVendors } from '@/features/vendors/hooks/use-vendors';
 import { VendorFormFields, type VendorFormData } from '@/features/vendors';
 import { NotFoundState } from '@/features/shared';
 import { toast } from 'sonner';

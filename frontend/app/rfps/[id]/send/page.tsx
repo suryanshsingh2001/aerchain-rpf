@@ -7,8 +7,8 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useRfp, useRfps } from "@/hooks/use-rfps";
-import { useVendors } from "@/hooks/use-vendors";
+import { useRfp, useRfps } from "@/features/rfps/hooks/use-rfps";
+import { useVendors } from "@/features/vendors/hooks/use-vendors";
 import {
   RfpSummaryPreview,
   SendSuccessView,
