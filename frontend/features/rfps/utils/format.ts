@@ -14,6 +14,25 @@ export function formatCurrency(
 }
 
 /**
+ * Format ID to a shorter, readable format
+ * e.g., "Cmkgsc7or0000zo0iktax7qoe" => "RFP-KTAX7QOE"
+ */
+export function formatRfpId(id: string): string {
+  if (!id || id.length < 8) return id;
+  const suffix = id.slice(-8).toUpperCase();
+  return `RFP-${suffix}`;
+}
+
+/**
+ * Format Vendor ID to a shorter, readable format
+ */
+export function formatVendorId(id: string): string {
+  if (!id || id.length < 8) return id;
+  const suffix = id.slice(-8).toUpperCase();
+  return `VND-${suffix}`;
+}
+
+/**
  * Get status color class for various status types
  */
 export function getStatusColor(status: string): string {

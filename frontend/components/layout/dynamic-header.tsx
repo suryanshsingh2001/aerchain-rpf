@@ -21,17 +21,34 @@ const segmentLabels: Record<string, string> = {
   edit: 'Edit',
   send: 'Send to Vendors',
   proposals: 'Proposals',
+  compare: 'Compare',
 };
 
-function formatSegment(segment: string): string {
+/**
+ * Format ID to a shorter, readable format for breadcrumbs
+ */
+function formatEntityId(segment: string, parentSegment?: string): string {
+  if (!segment || segment.length < 8) return segment;
+  const suffix = segment.slice(-8).toUpperCase();
+  
+  if (parentSegment === 'rfps') {
+    return `RFP-${suffix}`;
+  }
+  if (parentSegment === 'vendors') {
+    return `VND-${suffix}`;
+  }
+  return suffix;
+}
+
+function formatSegment(segment: string, parentSegment?: string): string {
   // Check if it's a known segment
   if (segmentLabels[segment]) {
     return segmentLabels[segment];
   }
   
-  // Check if it's a UUID (detail page) - show as "Details"
-  if (segment.match(/^[0-9a-f-]{36}$/i) || segment.match(/^[0-9]+$/)) {
-    return 'Details';
+  // Check if it's a UUID or CUID (detail page) - format as entity ID
+  if (segment.match(/^[0-9a-f-]{36}$/i) || segment.match(/^[a-z0-9]{20,}$/i)) {
+    return formatEntityId(segment, parentSegment);
   }
   
   // Default: capitalize and replace hyphens
@@ -55,9 +72,10 @@ function generateBreadcrumbs(pathname: string) {
   segments.forEach((segment, index) => {
     currentPath += `/${segment}`;
     const isLast = index === segments.length - 1;
+    const parentSegment = index > 0 ? segments[index - 1] : undefined;
     
     breadcrumbs.push({
-      label: formatSegment(segment),
+      label: formatSegment(segment, parentSegment),
       href: isLast ? undefined : currentPath,
     });
   });

@@ -53,7 +53,7 @@ import {
 import type { Rfp, Pagination } from '@/lib/types';
 import { deleteRfp as deleteRfpAction } from '@/lib/actions';
 import { RfpStatusBadge } from './rfp-status-badge';
-import { formatCurrency } from '../utils/format';
+import { formatCurrency, formatRfpId } from '../utils/format';
 
 interface RfpsTableProps {
   initialRfps: Rfp[];
@@ -168,7 +168,7 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
             <TableBody>
               {filteredRfps.map((rfp, index) => (
                 <TableRow key={rfp.id} className="group">
-                  <TableCell className="text-muted-foreground font-medium">
+                  <TableCell className="text-muted-foreground font-medium w-20 ">
                     {index + 1}
                   </TableCell>
                   <TableCell>
