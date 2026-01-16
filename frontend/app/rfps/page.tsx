@@ -6,7 +6,7 @@ import { RfpsTable, RfpsTableSkeleton } from '@/features/rfps';
 
 async function RfpsContent({ page }: { page: number }) {
   const result = await getRfps(page, 10);
-  
+  console.log('RFPs result:', result);
   if (result.error) {
     return (
       <div className="rounded-md border p-6">
