@@ -21,8 +21,8 @@
 - [Decisions & Assumptions](#️-decisions--assumptions)
 - [Limitations & Trade-offs](#-limitations--trade-offs)
 - [AI Tools Usage](#-ai-tools-usage)
-- [Demo Video](#-demo-video)
-
+- [Additional Notes](#-additional-notes)
+- [About Me](#about-me)
 ---
 
 ## 🎯 Overview
