@@ -13,7 +13,7 @@ import {
   ProposalRankingList,
   ComparisonTable,
   StrengthsWeaknessesGrid,
-} from '@/features/rfps';
+} from '@/features/proposals';
 import { NotFoundState, EmptyState } from '@/features/shared';
 import type { ComparisonResult } from '@/lib/types';
 import { toast } from 'sonner';

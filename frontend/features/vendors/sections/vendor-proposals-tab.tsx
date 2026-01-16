@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ProposalStatusBadge } from '@/features/rfps';
+import { ProposalStatusBadge } from '@/features/proposals';
 import { formatDistanceToNow } from 'date-fns';
 import type { Vendor } from '@/lib/types';
 

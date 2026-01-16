@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import type { Proposal } from '@/lib/types';
-import { formatCurrency } from '../utils/format';
+import { formatCurrency } from '@/features/rfps/utils/format';
 
 interface ProposalCardProps {
   proposal: Proposal;

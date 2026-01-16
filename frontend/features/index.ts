@@ -4,4 +4,5 @@
 export * from './dashboard';
 export * from './rfps';
 export * from './vendors';
+export * from './proposals';
 export * from './shared';

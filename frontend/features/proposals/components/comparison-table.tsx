@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { formatCurrency } from '../utils/format';
+import { formatCurrency } from '@/features/rfps/utils/format';
 import type { Proposal } from '@/lib/types';
 
 interface ComparisonTableProps {
@@ -145,6 +145,17 @@ export function ComparisonTable({ proposals }: ComparisonTableProps) {
               {proposals.map((proposal) => (
                 <TableCell key={proposal.id} className="text-center">
                   <Badge variant="outline">{proposal.status}</Badge>
+                </TableCell>
+              ))}
+            </TableRow>
+            {/* AI Summary Row */}
+            <TableRow>
+              <TableCell className="font-medium align-top">AI Summary</TableCell>
+              {proposals.map((proposal) => (
+                <TableCell key={proposal.id} className="text-left">
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {proposal.aiSummary || 'No AI analysis available'}
+                  </p>
                 </TableCell>
               ))}
             </TableRow>

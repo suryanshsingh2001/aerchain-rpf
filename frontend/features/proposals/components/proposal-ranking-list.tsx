@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ScoreIndicator } from './comparison-components';
+import { ScoreIndicator } from './score-indicator';
 import type { Proposal } from '@/lib/types';
 
 interface ProposalRankingListProps {

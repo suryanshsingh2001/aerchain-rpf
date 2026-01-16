@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { ProposalCard } from '../components/proposal-card';
+import { ProposalCard } from '@/features/proposals';
 import type { Rfp, Proposal } from '@/lib/types';
 
 interface ComparisonResult {

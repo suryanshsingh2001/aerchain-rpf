@@ -12,11 +12,13 @@ import { useVendors } from "@/hooks/use-vendors";
 import {
   RfpSummaryPreview,
   SendSuccessView,
-  VendorSelectionCard,
-  SelectedVendorsPreview,
   SendActionBar,
   getStatusColor,
 } from "@/features/rfps";
+import {
+  VendorSelectionCard,
+  SelectedVendorsPreview,
+} from "@/features/vendors";
 import { NotFoundState } from "@/features/shared";
 import { toast } from "sonner";
 
