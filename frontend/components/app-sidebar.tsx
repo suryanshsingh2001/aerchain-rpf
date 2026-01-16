@@ -44,8 +44,8 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant="inset" collapsible="icon">
-      <SidebarHeader>
+    <Sidebar variant="inset" collapsible="icon" className='bg-primary/5'>
+      <SidebarHeader className='bg-primary/5'>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
@@ -63,11 +63,11 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className='bg-primary/5'>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className='space-y-2'>
               {navigation.map((item) => {
                 const isActive = pathname === item.href || 
                   (item.href !== '/' && pathname.startsWith(item.href));
@@ -76,12 +76,13 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.name}>
                     <SidebarMenuButton 
                       asChild 
+                      className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary hover:bg-primary/6 hover:text-primary"
                       isActive={isActive}
                       tooltip={item.name}
                     >
                       <Link href={item.href}>
-                        <item.icon />
-                        <span>{item.name}</span>
+                      <item.icon className="size-5" />
+                      <span className='text-md'>{item.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -93,7 +94,7 @@ export function AppSidebar() {
 
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className='bg-primary/5'>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>

@@ -27,12 +27,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${raleway.variable} font-sans antialiased`}
+        className={`${raleway.variable} font-sans antialiased bg-primary/5`}
       >
         <Providers>
           <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>
+            <SidebarInset className="">
               <DynamicHeader />
               {children}
             </SidebarInset>
