@@ -4,19 +4,12 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Edit2,
   Trash2,
   Mail,
-  Phone,
-  MapPin,
   FileText,
-  CheckCircle2,
-  Clock,
   Users,
   Building2,
-  Tag,
   ArrowLeft,
-  XCircle,
   Send,
   Sparkles,
   BarChart3,
@@ -31,7 +24,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -45,65 +37,11 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useVendor, useVendors } from '@/hooks/use-vendors';
+import { VendorStatusBadge, VendorContactDetails, VendorCategories } from '@/features/vendors';
+import { EmailStatusBadge, ProposalStatusBadge } from '@/features/rfps';
+import { NotFoundState } from '@/features/shared';
 import { format, formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
-
-function VendorStatusBadge({ status }: { status: 'ACTIVE' | 'INACTIVE' }) {
-  if (status === 'ACTIVE') {
-    return (
-      <Badge variant="outline" className="gap-1.5 font-medium px-3 py-1 bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300">
-        <CheckCircle2 className="h-3.5 w-3.5" />
-        Active
-      </Badge>
-    );
-  }
-  return (
-    <Badge variant="outline" className="gap-1.5 font-medium px-3 py-1 bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300">
-      <XCircle className="h-3.5 w-3.5" />
-      Inactive
-    </Badge>
-  );
-}
-
-function EmailStatusBadge({ status }: { status: string }) {
-  const config: Record<string, { className: string; icon: typeof Mail }> = {
-    SENT: { 
-      className: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300', 
-      icon: CheckCircle2 
-    },
-    PENDING: { 
-      className: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300', 
-      icon: Clock 
-    },
-    FAILED: { 
-      className: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300', 
-      icon: XCircle 
-    },
-  };
-
-  const { className, icon: Icon } = config[status] || config.PENDING;
-
-  return (
-    <Badge variant="outline" className={`gap-1 font-medium ${className}`}>
-      <Icon className="h-3 w-3" />
-      {status}
-    </Badge>
-  );
-}
-
-function ProposalStatusBadge({ status }: { status: string }) {
-  const config: Record<string, string> = {
-    EVALUATED: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300',
-    PARSED: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300',
-    RECEIVED: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300',
-  };
-
-  return (
-    <Badge variant="outline" className={`font-medium ${config[status] || config.RECEIVED}`}>
-      {status}
-    </Badge>
-  );
-}
 
 export default function VendorDetailPage() {
   const params = useParams();
@@ -150,25 +88,7 @@ export default function VendorDetailPage() {
   }
 
   if (!vendor) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <div className="mx-auto w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-4">
-            <Users className="h-10 w-10 text-muted-foreground/50" />
-          </div>
-          <h2 className="text-xl font-semibold">Vendor not found</h2>
-          <p className="mt-2 text-muted-foreground max-w-sm">
-            The vendor you&apos;re looking for doesn&apos;t exist or has been deleted.
-          </p>
-          <Button className="mt-6" asChild>
-            <Link href="/vendors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Vendors
-            </Link>
-          </Button>
-        </div>
-      </div>
-    );
+    return <NotFoundState entity="Vendor" backHref="/vendors" backLabel="Back to Vendors" />;
   }
 
   const rfpCount = vendor.rfpVendors?.length || 0;

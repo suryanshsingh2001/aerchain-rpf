@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { getVendors } from '@/lib/actions';
-import { VendorsTable } from '@/components/vendors/vendors-table';
+import { VendorsTable } from '@/features/vendors';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function VendorsTableSkeleton() {

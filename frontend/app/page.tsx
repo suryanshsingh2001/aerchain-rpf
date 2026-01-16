@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { getRfps, getVendors } from '@/lib/actions';
-import { DashboardContent } from '@/components/dashboard/dashboard-content';
+import { DashboardContent } from '@/features/dashboard';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 

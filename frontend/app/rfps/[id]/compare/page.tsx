@@ -9,14 +9,12 @@ import {
   BarChart3,
   Trophy,
   CheckCircle2,
-  XCircle,
   DollarSign,
   Clock,
   Shield,
   FileText,
-  TrendingUp,
   TrendingDown,
-  Minus,
+  XCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,7 +25,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -40,57 +37,15 @@ import {
 } from '@/components/ui/table';
 import { useRfp } from '@/hooks/use-rfps';
 import { useProposals } from '@/hooks/use-proposals';
+import { 
+  AiRecommendationCard, 
+  ScoreIndicator, 
+  ComparisonMetric, 
+  formatCurrency 
+} from '@/features/rfps';
+import { NotFoundState } from '@/features/shared';
 import type { Proposal, ComparisonResult } from '@/lib/types';
 import { toast } from 'sonner';
-
-function ScoreIndicator({ score }: { score: number }) {
-  const getColor = () => {
-    if (score >= 80) return 'text-green-600 bg-green-100';
-    if (score >= 60) return 'text-yellow-600 bg-yellow-100';
-    return 'text-red-600 bg-red-100';
-  };
-
-  return (
-    <div className={`inline-flex items-center justify-center h-12 w-12 rounded-full font-bold ${getColor()}`}>
-      {score}
-    </div>
-  );
-}
-
-function ComparisonMetric({
-  label,
-  values,
-  bestIndex,
-  icon: Icon,
-  format = (v: any) => v?.toString() || 'N/A',
-}: {
-  label: string;
-  values: any[];
-  bestIndex: number;
-  icon: React.ComponentType<{ className?: string }>;
-  format?: (v: any) => string;
-}) {
-  return (
-    <div className="grid gap-4" style={{ gridTemplateColumns: `200px repeat(${values.length}, 1fr)` }}>
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <Icon className="h-4 w-4" />
-        <span className="text-sm font-medium">{label}</span>
-      </div>
-      {values.map((value, idx) => (
-        <div
-          key={idx}
-          className={`text-center p-2 rounded ${
-            idx === bestIndex ? 'bg-green-50 border border-green-200' : ''
-          }`}
-        >
-          <span className={`font-medium ${idx === bestIndex ? 'text-green-700' : ''}`}>
-            {format(value)}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function ComparisonPage() {
   const params = useParams();
@@ -122,15 +77,6 @@ export default function ComparisonPage() {
     }
   };
 
-  const formatCurrency = (value: string | null | undefined, currency = 'USD') => {
-    if (!value) return 'N/A';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      maximumFractionDigits: 0,
-    }).format(parseFloat(value));
-  };
-
   const loading = rfpLoading || proposalsLoading;
 
   if (loading) {
@@ -144,17 +90,7 @@ export default function ComparisonPage() {
   }
 
   if (!rfp) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <FileText className="h-16 w-16 text-muted-foreground/50 mx-auto" />
-          <h2 className="mt-4 text-lg font-semibold">RFP not found</h2>
-          <Button className="mt-4" asChild>
-            <Link href="/rfps">Back to RFPs</Link>
-          </Button>
-        </div>
-      </div>
-    );
+    return <NotFoundState entity="RFP" backHref="/rfps" backLabel="Back to RFPs" />;
   }
 
   // Sort proposals by AI score

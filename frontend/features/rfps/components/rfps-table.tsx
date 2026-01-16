@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useTransition } from "react";
-import Link from "next/link";
+import { useState, useTransition } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'sonner';
 import {
   FileText,
   Plus,
   Search,
   Filter,
   MoreHorizontal,
-  Mail,
-  Clock,
-  CheckCircle2,
   Trash2,
   Eye,
   Send,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -39,7 +39,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -49,48 +49,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import type { Rfp, RfpStatus, Pagination } from "@/lib/types";
-import { formatDistanceToNow } from "date-fns";
-import { toast } from "sonner";
-import { deleteRfp as deleteRfpAction } from "@/lib/actions";
-import { useRouter } from "next/navigation";
-
-function RfpStatusBadge({ status }: { status: RfpStatus }) {
-  const config: Record<
-    RfpStatus,
-    {
-      className: string;
-      icon: typeof FileText;
-    }
-  > = {
-    DRAFT: { 
-      className: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700', 
-      icon: FileText 
-    },
-    SENT: { 
-      className: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800', 
-      icon: Mail 
-    },
-    EVALUATING: { 
-      className: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800', 
-      icon: Clock 
-    },
-    CLOSED: { 
-      className: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800', 
-      icon: CheckCircle2 
-    },
-  };
-
-  const { className, icon: Icon } = config[status];
-
-  return (
-    <Badge variant="outline" className={`gap-1.5 font-medium ${className}`}>
-      <Icon className="h-3 w-3" />
-      {status.charAt(0) + status.slice(1).toLowerCase()}
-    </Badge>
-  );
-}
+} from '@/components/ui/alert-dialog';
+import type { Rfp, Pagination } from '@/lib/types';
+import { deleteRfp as deleteRfpAction } from '@/lib/actions';
+import { RfpStatusBadge } from './rfp-status-badge';
+import { formatCurrency } from '../utils/format';
 
 interface RfpsTableProps {
   initialRfps: Rfp[];
@@ -101,8 +64,8 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
   const router = useRouter();
   const [rfps, setRfps] = useState(initialRfps);
   const [pagination, setPagination] = useState(initialPagination);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [rfpToDelete, setRfpToDelete] = useState<Rfp | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -113,9 +76,9 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
     startTransition(async () => {
       const result = await deleteRfpAction(rfpToDelete.id);
       if (result.error) {
-        toast.error("Failed to delete RFP");
+        toast.error('Failed to delete RFP');
       } else {
-        toast.success("RFP deleted successfully");
+        toast.success('RFP deleted successfully');
         setRfps(rfps.filter((r) => r.id !== rfpToDelete.id));
         router.refresh();
       }
@@ -125,24 +88,10 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
   };
 
   const filteredRfps = rfps.filter((rfp) => {
-    const matchesSearch = rfp.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesStatus = statusFilter === "all" || rfp.status === statusFilter;
+    const matchesSearch = rfp.title.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || rfp.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
-
-  const formatCurrency = (
-    value: string | null | undefined,
-    currency = "USD"
-  ) => {
-    if (!value) return "N/A";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    }).format(parseFloat(value));
-  };
 
   return (
     <>
@@ -189,11 +138,11 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
             </div>
             <h3 className="mt-4 text-lg font-semibold">No RFPs found</h3>
             <p className="mt-2 text-sm text-muted-foreground max-w-sm">
-              {search || statusFilter !== "all"
-                ? "Try adjusting your search or filters"
-                : "Get started by creating your first RFP using natural language"}
+              {search || statusFilter !== 'all'
+                ? 'Try adjusting your search or filters'
+                : 'Get started by creating your first RFP using natural language'}
             </p>
-            {!search && statusFilter === "all" && (
+            {!search && statusFilter === 'all' && (
               <Button className="mt-4" asChild>
                 <Link href="/rfps/create">
                   <Plus className="mr-2 h-4 w-4" />
@@ -247,9 +196,13 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-center">
-                    <Badge 
-                      variant="secondary" 
-                      className={`font-medium ${(rfp._count?.proposals || 0) > 0 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : ''}`}
+                    <Badge
+                      variant="secondary"
+                      className={`font-medium ${
+                        (rfp._count?.proposals || 0) > 0
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                          : ''
+                      }`}
                     >
                       {rfp._count?.proposals || 0}
                     </Badge>
@@ -273,7 +226,7 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
                             View Details
                           </Link>
                         </DropdownMenuItem>
-                        {rfp.status === "DRAFT" && (
+                        {rfp.status === 'DRAFT' && (
                           <DropdownMenuItem asChild>
                             <Link href={`/rfps/${rfp.id}/send`}>
                               <Send className="mr-2 h-4 w-4" />
@@ -306,17 +259,12 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-            {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
+            Showing {(pagination.page - 1) * pagination.limit + 1} to{' '}
+            {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
             {pagination.total} results
           </p>
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={pagination.page === 1}
-              asChild
-            >
+            <Button variant="outline" size="sm" disabled={pagination.page === 1} asChild>
               <Link href={`/rfps?page=${pagination.page - 1}`}>Previous</Link>
             </Button>
             <Button
@@ -337,9 +285,8 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete RFP</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete &quot;{rfpToDelete?.title}&quot;?
-              This action cannot be undone and will also delete all associated
-              proposals.
+              Are you sure you want to delete &quot;{rfpToDelete?.title}&quot;? This action
+              cannot be undone and will also delete all associated proposals.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -349,7 +296,7 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
               disabled={isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isPending ? "Deleting..." : "Delete"}
+              {isPending ? 'Deleting...' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

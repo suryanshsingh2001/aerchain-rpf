@@ -9,18 +9,15 @@ import {
   Calendar,
   FileText,
   Shield,
-  Clock,
   Send,
   Users,
   Mail,
   Sparkles,
-  Edit2,
   Trash2,
   CheckCircle2,
   BarChart3,
   Plus,
   Printer,
-  Download,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -46,114 +43,11 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useRfp, useRfps } from '@/hooks/use-rfps';
 import { useProposals } from '@/hooks/use-proposals';
+import { RfpStatusBadge, ProposalCard, formatCurrency } from '@/features/rfps';
+import { NotFoundState } from '@/features/shared';
 import type { Rfp, RfpItem, RfpStatus, Proposal } from '@/lib/types';
 import { format, formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
-
-function RfpStatusBadge({ status }: { status: RfpStatus }) {
-  const config: Record<RfpStatus, { className: string; icon: typeof FileText }> = {
-    DRAFT: { 
-      className: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300', 
-      icon: FileText 
-    },
-    SENT: { 
-      className: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300', 
-      icon: Mail 
-    },
-    EVALUATING: { 
-      className: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300', 
-      icon: Clock 
-    },
-    CLOSED: { 
-      className: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300', 
-      icon: CheckCircle2 
-    },
-  };
-
-  const { className, icon: Icon } = config[status];
-
-  return (
-    <Badge variant="outline" className={`gap-1.5 font-medium px-3 py-1 ${className}`}>
-      <Icon className="h-3.5 w-3.5" />
-      {status.charAt(0) + status.slice(1).toLowerCase()}
-    </Badge>
-  );
-}
-
-function ProposalCard({ proposal }: { proposal: Proposal }) {
-  const formatCurrency = (value: string | null | undefined, currency = 'USD') => {
-    if (!value) return 'N/A';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      maximumFractionDigits: 0,
-    }).format(parseFloat(value));
-  };
-
-  return (
-    <Card>
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-              <span className="text-sm font-medium text-primary">
-                {proposal.vendor.name.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            <div>
-              <CardTitle className="text-base">{proposal.vendor.name}</CardTitle>
-              <CardDescription>{proposal.vendor.email}</CardDescription>
-            </div>
-          </div>
-          {proposal.aiScore && (
-            <div className="text-right">
-              <div className="text-2xl font-bold text-primary">{proposal.aiScore}</div>
-              <div className="text-xs text-muted-foreground">AI Score</div>
-            </div>
-          )}
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-3 gap-4 text-sm">
-          <div>
-            <p className="text-muted-foreground">Total Price</p>
-            <p className="font-medium">{formatCurrency(proposal.totalPrice, proposal.currency)}</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Delivery</p>
-            <p className="font-medium">
-              {proposal.deliveryDays ? `${proposal.deliveryDays} days` : 'N/A'}
-            </p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Warranty</p>
-            <p className="font-medium">
-              {proposal.warrantyMonths ? `${proposal.warrantyMonths} months` : 'N/A'}
-            </p>
-          </div>
-        </div>
-        
-        {proposal.aiSummary && (
-          <div className="rounded-lg bg-muted/50 p-3">
-            <p className="text-sm">{proposal.aiSummary}</p>
-          </div>
-        )}
-
-        <div className="flex items-center justify-between pt-2">
-          <Badge variant={
-            proposal.status === 'EVALUATED' ? 'default' :
-            proposal.status === 'PARSED' ? 'secondary' : 'outline'
-          }>
-            {proposal.status}
-          </Badge>
-          <span className="text-xs text-muted-foreground">
-            Received {formatDistanceToNow(new Date(proposal.receivedAt), { addSuffix: true })}
-          </span>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 export default function RfpDetailPage() {
   const params = useParams();
@@ -197,15 +91,6 @@ export default function RfpDetailPage() {
     window.print();
   };
 
-  const formatCurrency = (value: string | null | undefined, currency = 'USD') => {
-    if (!value) return 'Not specified';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      maximumFractionDigits: 0,
-    }).format(parseFloat(value));
-  };
-
   if (loading) {
     return (
       <div className="flex-1 p-6 space-y-6 max-w-5xl mx-auto w-full">
@@ -217,20 +102,7 @@ export default function RfpDetailPage() {
   }
 
   if (error || !rfp) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <FileText className="h-16 w-16 text-muted-foreground/50 mx-auto" />
-          <h2 className="mt-4 text-lg font-semibold">RFP not found</h2>
-          <p className="mt-2 text-muted-foreground">
-            The RFP you&apos;re looking for doesn&apos;t exist or has been deleted.
-          </p>
-          <Button className="mt-4" asChild>
-            <Link href="/rfps">Back to RFPs</Link>
-          </Button>
-        </div>
-      </div>
-    );
+    return <NotFoundState entity="RFP" backHref="/rfps" backLabel="Back to RFPs" />;
   }
 
   return (

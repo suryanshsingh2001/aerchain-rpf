@@ -1,17 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Sparkles,
   Loader2,
   Package,
   DollarSign,
-  Calendar,
-  FileText,
-  Shield,
   Clock,
+  Shield,
   ChevronRight,
   Send,
 } from 'lucide-react';
@@ -27,6 +24,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useRfps } from '@/hooks/use-rfps';
+import { RfpItemsList, RfpTermsGrid } from '@/features/rfps';
 import type { Rfp, RfpItem } from '@/lib/types';
 import { toast } from 'sonner';
 
@@ -37,7 +35,6 @@ const examplePrompts = [
 ];
 
 export default function CreateRfpPage() {
-  const router = useRouter();
   const { createRfp, loading } = useRfps();
   const [input, setInput] = useState('');
   const [generatedRfp, setGeneratedRfp] = useState<Rfp | null>(null);
@@ -64,15 +61,6 @@ export default function CreateRfpPage() {
 
   const handleUseExample = (example: string) => {
     setInput(example);
-  };
-
-  const formatCurrency = (value: string | null | undefined, currency = 'USD') => {
-    if (!value) return 'Not specified';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      maximumFractionDigits: 0,
-    }).format(parseFloat(value));
   };
 
   return (
@@ -177,78 +165,18 @@ export default function CreateRfpPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Items */}
-                <div>
-                  <h4 className="font-medium mb-3 flex items-center gap-2">
-                    <Package className="h-4 w-4" />
-                    Items Required
-                  </h4>
-                  <div className="space-y-2">
-                    {(generatedRfp.items as RfpItem[]).map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start justify-between p-3 rounded-lg border bg-background"
-                      >
-                        <div>
-                          <p className="font-medium">{item.name}</p>
-                          {item.specifications && (
-                            <p className="text-sm text-muted-foreground mt-1">
-                              {item.specifications}
-                            </p>
-                          )}
-                        </div>
-                        <Badge variant="secondary">
-                          Qty: {item.quantity} {item.unit || ''}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <RfpItemsList items={generatedRfp.items as RfpItem[]} />
 
                 <Separator />
 
                 {/* Terms Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <DollarSign className="h-4 w-4" />
-                      <span className="text-sm">Budget</span>
-                    </div>
-                    <p className="font-medium">
-                      {formatCurrency(generatedRfp.budget, generatedRfp.currency)}
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Calendar className="h-4 w-4" />
-                      <span className="text-sm">Delivery</span>
-                    </div>
-                    <p className="font-medium">
-                      {generatedRfp.deliveryDays
-                        ? `${generatedRfp.deliveryDays} days`
-                        : 'Not specified'}
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <FileText className="h-4 w-4" />
-                      <span className="text-sm">Payment Terms</span>
-                    </div>
-                    <p className="font-medium">
-                      {generatedRfp.paymentTerms || 'Not specified'}
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Shield className="h-4 w-4" />
-                      <span className="text-sm">Warranty</span>
-                    </div>
-                    <p className="font-medium">
-                      {generatedRfp.warrantyMonths
-                        ? `${generatedRfp.warrantyMonths} months`
-                        : 'Not specified'}
-                    </p>
-                  </div>
-                </div>
+                <RfpTermsGrid
+                  budget={generatedRfp?.budget !!}
+                  currency={generatedRfp?.currency !!}
+                  deliveryDays={generatedRfp?.deliveryDays !!}
+                  paymentTerms={generatedRfp?.paymentTerms !!}
+                  warrantyMonths={generatedRfp?.warrantyMonths !!}
+                />
 
                 {generatedRfp.additionalTerms && (
                   <>
@@ -256,7 +184,7 @@ export default function CreateRfpPage() {
                     <div>
                       <h4 className="font-medium mb-2">Additional Terms</h4>
                       <p className="text-sm text-muted-foreground">
-                        {generatedRfp.additionalTerms}
+                        {generatedRfp?.additionalTerms}
                       </p>
                     </div>
                   </>

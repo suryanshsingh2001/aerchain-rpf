@@ -10,15 +10,14 @@ import {
   Mail,
   Loader2,
   Search,
-  CheckCircle2,
   ArrowLeft,
-  Package,
-  DollarSign,
-  Calendar,
-  Building2,
   X,
   UserPlus,
+  CheckCircle2,
+  Package,
+  Calendar,
   Sparkles,
+  DollarSign
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +30,6 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Separator } from '@/components/ui/separator';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,8 +43,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useRfp, useRfps } from '@/hooks/use-rfps';
 import { useVendors } from '@/hooks/use-vendors';
+import { RfpSummaryCard, SendSuccessCard, formatCurrency, getStatusColor } from '@/features/rfps';
+import { NotFoundState } from '@/features/shared';
 import type { Vendor, RfpItem } from '@/lib/types';
 import { toast } from 'sonner';
+import { Separator } from '@/components/ui/separator';
 
 export default function SendRfpPage() {
   const params = useParams();
@@ -151,16 +152,7 @@ export default function SendRfpPage() {
   }
 
   if (!rfp) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-lg font-semibold">RFP not found</h2>
-          <Button className="mt-4" asChild>
-            <Link href="/rfps">Back to RFPs</Link>
-          </Button>
-        </div>
-      </div>
-    );
+    return <NotFoundState entity="RFP" backHref="/rfps" backLabel="Back to RFPs" />;
   }
 
   if (success) {

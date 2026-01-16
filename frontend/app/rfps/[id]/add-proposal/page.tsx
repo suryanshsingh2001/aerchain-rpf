@@ -1,13 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Loader2,
   Sparkles,
   Plus,
-  CheckCircle2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -31,11 +30,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useRfp } from '@/hooks/use-rfps';
 import { useVendors } from '@/hooks/use-vendors';
 import { useProposals } from '@/hooks/use-proposals';
+import { SuccessCard, NotFoundState } from '@/features/shared';
 import { toast } from 'sonner';
 
 export default function AddProposalPage() {
   const params = useParams();
-  const router = useRouter();
   const rfpId = params.id as string;
 
   const { rfp, loading: rfpLoading, fetchRfp } = useRfp(rfpId);
@@ -88,48 +87,29 @@ export default function AddProposalPage() {
   }
 
   if (!rfp) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-lg font-semibold">RFP not found</h2>
-          <Button className="mt-4" asChild>
-            <Link href="/rfps">Back to RFPs</Link>
-          </Button>
-        </div>
-      </div>
-    );
+    return <NotFoundState entity="RFP" backHref="/rfps" backLabel="Back to RFPs" />;
   }
 
   if (success) {
     return (
       <div className="flex-1 flex items-center justify-center p-6">
-        <Card className="max-w-md w-full text-center">
-          <CardContent className="pt-6">
-            <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
-              <CheckCircle2 className="h-8 w-8 text-green-600" />
-            </div>
-            <h2 className="text-xl font-semibold mb-2">Proposal Added!</h2>
-            <p className="text-muted-foreground mb-6">
-              The proposal has been parsed by AI and added to this RFP.
-            </p>
-            <div className="flex gap-3 justify-center">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setSuccess(false);
-                  setVendorId('');
-                  setSubject('');
-                  setContent('');
-                }}
-              >
-                Add Another
-              </Button>
-              <Button asChild>
-                <Link href={`/rfps/${rfpId}`}>View RFP</Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <SuccessCard
+          title="Proposal Added!"
+          description="The proposal has been parsed by AI and added to this RFP."
+          primaryAction={{
+            label: 'View RFP',
+            href: `/rfps/${rfpId}`,
+          }}
+          secondaryAction={{
+            label: 'Add Another',
+            onClick: () => {
+              setSuccess(false);
+              setVendorId('');
+              setSubject('');
+              setContent('');
+            },
+          }}
+        />
       </div>
     );
   }

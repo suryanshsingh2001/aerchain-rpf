@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { getRfps } from '@/lib/actions';
-import { RfpsTable } from '@/components/rfps/rfps-table';
+import { RfpsTable } from '@/features/rfps';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function RfpsTableSkeleton() {

@@ -1,7 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import Link from "next/link";
+import { useState, useTransition } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'sonner';
 import {
   Users,
   Plus,
@@ -13,24 +16,24 @@ import {
   Edit2,
   Mail,
   Phone,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -38,7 +41,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -48,54 +51,22 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import type { Vendor, Pagination } from "@/lib/types";
-import { formatDistanceToNow } from "date-fns";
-import { toast } from "sonner";
-import { deleteVendor as deleteVendorAction } from "@/lib/actions";
-import { useRouter } from "next/navigation";
-import { CheckCircle, XCircle } from "lucide-react";
-
-function VendorStatusBadge({ status }: { status: "ACTIVE" | "INACTIVE" }) {
-  const config = {
-    ACTIVE: {
-      className:
-        "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800",
-      icon: CheckCircle,
-      label: "Active",
-    },
-    INACTIVE: {
-      className:
-        "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700",
-      icon: XCircle,
-      label: "Inactive",
-    },
-  };
-
-  const { className, icon: Icon, label } = config[status];
-
-  return (
-    <Badge variant="outline" className={`gap-1.5 font-medium ${className}`}>
-      <Icon className="h-3 w-3" />
-      {label}
-    </Badge>
-  );
-}
+} from '@/components/ui/alert-dialog';
+import type { Vendor, Pagination } from '@/lib/types';
+import { deleteVendor as deleteVendorAction } from '@/lib/actions';
+import { VendorStatusBadge } from './vendor-status-badge';
 
 interface VendorsTableProps {
   initialVendors: Vendor[];
   initialPagination: Pagination | null;
 }
 
-export function VendorsTable({
-  initialVendors,
-  initialPagination,
-}: VendorsTableProps) {
+export function VendorsTable({ initialVendors, initialPagination }: VendorsTableProps) {
   const router = useRouter();
   const [vendors, setVendors] = useState(initialVendors);
   const [pagination, setPagination] = useState(initialPagination);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [vendorToDelete, setVendorToDelete] = useState<Vendor | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -106,9 +77,9 @@ export function VendorsTable({
     startTransition(async () => {
       const result = await deleteVendorAction(vendorToDelete.id);
       if (result.error) {
-        toast.error("Failed to delete vendor");
+        toast.error('Failed to delete vendor');
       } else {
-        toast.success("Vendor deleted successfully");
+        toast.success('Vendor deleted successfully');
         setVendors(vendors.filter((v) => v.id !== vendorToDelete.id));
         router.refresh();
       }
@@ -123,8 +94,7 @@ export function VendorsTable({
       vendor.email.toLowerCase().includes(search.toLowerCase()) ||
       (vendor.contactPerson &&
         vendor.contactPerson.toLowerCase().includes(search.toLowerCase()));
-    const matchesStatus =
-      statusFilter === "all" || vendor.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' || vendor.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -171,11 +141,11 @@ export function VendorsTable({
             </div>
             <h3 className="mt-4 text-lg font-semibold">No vendors found</h3>
             <p className="mt-2 text-sm text-muted-foreground max-w-sm">
-              {search || statusFilter !== "all"
-                ? "Try adjusting your search or filters"
-                : "Get started by adding your first vendor"}
+              {search || statusFilter !== 'all'
+                ? 'Try adjusting your search or filters'
+                : 'Get started by adding your first vendor'}
             </p>
-            {!search && statusFilter === "all" && (
+            {!search && statusFilter === 'all' && (
               <Button className="mt-4" asChild>
                 <Link href="/vendors/create">
                   <Plus className="mr-2 h-4 w-4" />
@@ -241,11 +211,7 @@ export function VendorsTable({
                     <div className="flex flex-wrap gap-1.5">
                       {vendor.categories && vendor.categories.length > 0 ? (
                         vendor.categories.slice(0, 2).map((cat) => (
-                          <Badge
-                            key={cat}
-                            variant="outline"
-                            className="text-xs bg-muted "
-                          >
+                          <Badge key={cat} variant="outline" className="text-xs bg-muted ">
                             {cat}
                           </Badge>
                         ))
@@ -312,20 +278,13 @@ export function VendorsTable({
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-            {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
+            Showing {(pagination.page - 1) * pagination.limit + 1} to{' '}
+            {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
             {pagination.total} results
           </p>
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={pagination.page === 1}
-              asChild
-            >
-              <Link href={`/vendors?page=${pagination.page - 1}`}>
-                Previous
-              </Link>
+            <Button variant="outline" size="sm" disabled={pagination.page === 1} asChild>
+              <Link href={`/vendors?page=${pagination.page - 1}`}>Previous</Link>
             </Button>
             <Button
               variant="outline"
@@ -345,8 +304,8 @@ export function VendorsTable({
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Vendor</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete &quot;{vendorToDelete?.name}
-              &quot;? This action cannot be undone.
+              Are you sure you want to delete &quot;{vendorToDelete?.name}&quot;? This action
+              cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -356,7 +315,7 @@ export function VendorsTable({
               disabled={isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isPending ? "Deleting..." : "Delete"}
+              {isPending ? 'Deleting...' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
