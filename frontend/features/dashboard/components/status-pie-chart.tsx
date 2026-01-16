@@ -35,7 +35,7 @@ export function StatusPieChart({ data }: StatusPieChartProps) {
       </CardHeader>
       <CardContent>
         {data.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-[200px] text-center">
+          <div className="flex flex-col items-center justify-center h-50 text-center">
             <FileText className="h-10 w-10 text-muted-foreground/50" />
             <p className="mt-2 text-sm text-muted-foreground">No RFPs yet</p>
             <Button className="mt-3" size="sm" asChild>
@@ -46,7 +46,7 @@ export function StatusPieChart({ data }: StatusPieChartProps) {
             </Button>
           </div>
         ) : (
-          <ChartContainer config={chartConfig} className="h-[200px] w-full">
+          <ChartContainer config={chartConfig} className="h-50 w-full">
             <RechartsPieChart>
               <Pie
                 data={data}

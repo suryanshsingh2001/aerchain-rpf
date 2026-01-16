@@ -40,7 +40,7 @@ export function ActivityChart({ data }: ActivityChartProps) {
         <CardDescription>RFPs created and proposals received over time</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[200px] w-full">
+        <ChartContainer config={chartConfig} className="h-50 w-full">
           <AreaChart data={data}>
             <defs>
               <linearGradient id="fillRfps" x1="0" y1="0" x2="0" y2="1">

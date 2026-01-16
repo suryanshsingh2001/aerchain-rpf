@@ -50,8 +50,8 @@ export function RfpItemsList({ items, variant = 'default', maxItems }: RfpItemsL
         {displayItems.map((item, index) => (
           <div
             key={index}
-            className="flex items-start justify-between p-4 rounded-xl border bg-gradient-to-r from-muted/50 to-transparent hover:from-muted/80 transition-colors"
-          >
+            className="flex items-start justify-between p-4 rounded-xl border bg-linear-to-r from-muted/50 to-transparent hover:from-muted/80 transition-colors"
+          > 
             <div className="flex items-start gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary font-semibold text-sm">
                 {index + 1}

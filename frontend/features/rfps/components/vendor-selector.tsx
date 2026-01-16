@@ -103,7 +103,7 @@ export function VendorSelector({
             )}
           </div>
         ) : (
-          <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-100 overflow-y-auto pr-1">
             {filteredVendors.map((vendor) => {
               const isSelected = selectedVendors.has(vendor.id);
               return (
@@ -150,7 +150,7 @@ export function VendorSelector({
                     </div>
                   </div>
                   {vendor.categories && vendor.categories.length > 0 && (
-                    <div className="hidden sm:flex flex-wrap gap-1 justify-end max-w-[150px]">
+                    <div className="hidden sm:flex flex-wrap gap-1 justify-end max-w-37.5">
                       {vendor.categories.slice(0, 2).map((cat) => (
                         <Badge
                           key={cat}

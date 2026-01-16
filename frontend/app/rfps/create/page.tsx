@@ -27,12 +27,8 @@ import { useRfps } from '@/hooks/use-rfps';
 import { RfpItemsList, RfpTermsGrid } from '@/features/rfps';
 import type { Rfp, RfpItem } from '@/lib/types';
 import { toast } from 'sonner';
+import { EXAMPLE_PROMPTS } from '@/lib/prompts';
 
-const examplePrompts = [
-  "20 laptops with 16GB RAM and 15 monitors 27-inch for new office. Budget $50,000, delivery in 30 days, net 30 payment, 1 year warranty.",
-  "50 ergonomic chairs, 25 standing desks, 10 conference tables. Budget $75,000, delivery in 2 weeks, 2 year warranty.",
-  "100 iPads 256GB for sales team. Budget $60,000, net 45 payment, delivery in 3 weeks."
-];
 
 export default function CreateRfpPage() {
   const { createRfp, loading } = useRfps();
@@ -116,7 +112,7 @@ export default function CreateRfpPage() {
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground text-center">Try an example:</p>
               <div className="grid gap-2 sm:grid-cols-3">
-                {examplePrompts.map((prompt, index) => (
+                {EXAMPLE_PROMPTS.map((prompt, index) => (
                   <button
                     key={index}
                     onClick={() => handleUseExample(prompt)}

@@ -17,7 +17,7 @@ interface AiRecommendationCardProps {
 
 export function AiRecommendationCard({ comparison }: AiRecommendationCardProps) {
   return (
-    <Card className="border-emerald-500/50 bg-gradient-to-br from-emerald-500/5 to-transparent overflow-hidden">
+    <Card className="border-emerald-500/50 bg-linear-to-br from-emerald-500/5 to-transparent overflow-hidden pt-0">
       <CardHeader className="border-b border-emerald-500/20">
         <CardTitle className="flex items-center gap-2">
           <div className="rounded-lg bg-emerald-500/10 p-2">

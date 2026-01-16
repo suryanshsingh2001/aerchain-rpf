@@ -18,3 +18,4 @@ export { VendorListItem } from './vendor-list-item';
 export { VendorSelectionCard } from './vendor-selection-card';
 export { SelectedVendorsPreview } from './selected-vendors-preview';
 export { SendActionBar } from './send-action-bar';
+export { RfpsTableSkeleton } from './rfp-table-skeleton';

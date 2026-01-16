@@ -113,7 +113,7 @@ export function VendorsTable({ initialVendors, initialPagination }: VendorsTable
             />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-37.5">
               <Filter className="h-4 w-4 mr-2" />
               <SelectValue placeholder="Status" />
             </SelectTrigger>
@@ -158,13 +158,13 @@ export function VendorsTable({ initialVendors, initialPagination }: VendorsTable
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50">
-                <TableHead className="w-[60px] font-semibold">#</TableHead>
+                <TableHead className="w-15  font-semibold">#</TableHead>
                 <TableHead className="font-semibold">Vendor</TableHead>
                 <TableHead className="font-semibold">Contact</TableHead>
                 <TableHead className="font-semibold">Categories</TableHead>
                 <TableHead className="font-semibold">Status</TableHead>
                 <TableHead className="font-semibold">Added</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
+                <TableHead className="w-12.5"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -175,7 +175,7 @@ export function VendorsTable({ initialVendors, initialPagination }: VendorsTable
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/10 group-hover:from-primary/30 group-hover:to-primary/15 transition-colors">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-primary/10 group-hover:from-primary/30 group-hover:to-primary/15 transition-colors">
                         <span className="text-sm font-semibold text-primary">
                           {vendor.name.charAt(0).toUpperCase()}
                         </span>

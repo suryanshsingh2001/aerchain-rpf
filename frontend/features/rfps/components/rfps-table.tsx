@@ -108,7 +108,7 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
             />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-37.5">
               <Filter className="h-4 w-4 mr-2" />
               <SelectValue placeholder="Status" />
             </SelectTrigger>
@@ -155,14 +155,14 @@ export function RfpsTable({ initialRfps, initialPagination }: RfpsTableProps) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50">
-                <TableHead className="w-[60px] font-semibold">#</TableHead>
+                <TableHead className="w-15 font-semibold">#</TableHead>
                 <TableHead className="font-semibold">Title</TableHead>
                 <TableHead className="font-semibold">Status</TableHead>
                 <TableHead className="font-semibold">Budget</TableHead>
                 <TableHead className="font-semibold text-center">Vendors</TableHead>
                 <TableHead className="font-semibold text-center">Proposals</TableHead>
                 <TableHead className="font-semibold">Created</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
+                <TableHead className="w-12.5"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

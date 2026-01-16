@@ -106,12 +106,12 @@ export default function CreateVendorPage() {
               <Button type="submit" disabled={loading}>
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     Creating...
                   </>
                 ) : (
                   <>
-                    <Plus className="mr-2 h-4 w-4" />
+                    <Plus className="h-4 w-4" />
                     Create Vendor
                   </>
                 )}

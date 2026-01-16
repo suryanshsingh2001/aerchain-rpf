@@ -15,7 +15,7 @@ export function SendSuccessCard({ rfpId, vendorCount }: SendSuccessCardProps) {
   return (
     <div className="flex-1 flex items-center justify-center p-6">
       <Card className="max-w-lg w-full overflow-hidden">
-        <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 p-8 text-center">
+        <div className="bg-linear-to-b from-emerald-500/20 to-emerald-500/5 p-8 text-center">
           <div className="mx-auto w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center mb-4 shadow-lg">
             <CheckCircle2 className="h-10 w-10 text-emerald-600 dark:text-emerald-400" />
           </div>
