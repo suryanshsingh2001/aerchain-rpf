@@ -9,3 +9,6 @@ export { ProposalStatusBadge } from './proposal-status-badge';
 export { VendorSelector } from './vendor-selector';
 export { SendSuccessCard } from './send-success-card';
 export { AiRecommendationCard, ScoreIndicator, ComparisonMetric } from './comparison-components';
+export { ProposalRankingList } from './proposal-ranking-list';
+export { ComparisonTable } from './comparison-table';
+export { StrengthsWeaknessesGrid } from './strengths-weaknesses-grid';
